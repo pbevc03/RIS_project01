@@ -27,8 +27,8 @@ Narejen z React strukturnim ogrodjem.
 * **frontend/public**: staticna spletna strna, slike
 
 ## Standardi kodiranja
-...
-
+* **Java**: V Javi standardi kodiranja vključujejo CamelCase za poimenovanje razredov, metode in spremenljivke.Prav tako je priporočljivo, da se uporabljajo komentarji za dokumentiranje in da so vrstice kode kratke ter pregledne.
+* **JavaScript**: V JavaScriptu standardi kodiranja vključujejo uporabo camelCase za spremenljivke in funkcije. Poleg tega je priporočljiva uporaba dveh presledkov za zamik, dosledna uporaba zaklepajev ```{ }``` in minimalno globalno področje za spremenljivke.
 
 ## Navodila za namescanje
 1. Potrebna programska oprema:
@@ -78,6 +78,21 @@ Naša spletna stran z recepti je ustvarjena za vse ljubitelje kuhanja, saj omogo
 
 ### Kako aplikacija rešuje uporabniški problem
 Aplikacija poenostavi iskanje receptov glede na čas, sestavine in prehranske zahteve, s čimer uporabnikom prihrani čas pri načrtovanju obrokov. 
+
+## Besednjak
+Recepti - Navodila in sestavine za pripravo jedi.
+* **Jed** – Končan produkt po izvedenih navodilih recepta
+* **Sestavine** – Specifični izdelki, potrebni za pripravo recepta.
+* **Navodila** - Koraki, ki jih uporabnik sledi za pripravo obroka.
+* **Uporabnik** – Obiskovalec spletne strani, ki lahko išče in shranjuje recepte.
+* **Prehranske zahteve** - Specifične prehranske potrebe (brez glutena, vegansko, brez laktoze ipd.).
+* **Kuharske ravni** -Različne stopnje kuharskega znanja, npr. začetniki, srednje napredni, izkušeni.
+* **Shranjevanje receptov** - Funkcija, ki omogoča uporabnikom, da shranijo priljubljene recepte za poznejšo uporabo.
+* **Priljubljeni recepti** - Recepti, ki jih uporabnik označi kot priljubljene.
+* **Nasveti za kuhanje** - Nasveti in triki za izboljšanje kuharskih veščin ali poenostavitev procesov.
+* **Kategorije jedi** - Različne vrste receptov, kot so predjedi, glavne jedi, sladice, prigrizki ipd.
+* **Čas priprave** - Ocenjen čas, ki je potreben za pripravo jedi.
+* **Iskalnik** receptov - Orodje za iskanje receptov glede na določene parametre (čas priprave, sestavine, vrsta jedi ipd.).
 
 
 ## Diagram primerov uporabe
