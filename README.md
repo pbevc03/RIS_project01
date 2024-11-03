@@ -51,23 +51,23 @@ Nove funkcionalnosti pred objavo stestirajte.<br>
 Nove funkcionalnosti prav tako objavite na nov branch tako da lahko admin tega projekta pregleda te funkcionalnosti. 
 
 ## Diagram primerov uporabe
-![DPU-Recepti](https://github.com/user-attachments/assets/01da649d-a0fd-4ff0-bc1f-5676c21f4233)
-1. Pregled receptov
+![DPU-Recepti](https://github.com/user-attachments/assets/11d5d116-2eba-414e-8e41-5edc60b24d87)
+1. Pregled receptov<br>
 Uporabnik lahko pregleduje recepte v aplikacije, ter razširi pregled receptov z uporabo iskalnika za določene besede (npr. vrsta jedi, imena sestavin) ali dodatno zoži prikazane recepte glede na različne filtre, kot so čas priprave, sestavine ali prehranske zahteve.
 
-2. Ogled podrobnosti recepta
+2. Ogled podrobnosti recepta<br>
 Uporabnik lahko ogleda podrobnosti izbranega recepta, kot so seznam sestavin, navodila za pripravo, predviden čas in zahtevnost. S tem je omogočen bolj poglobljen vpogled v recept, preden se uporabnik odloči za pripravo ali shranjevanje.
 
-3. Dodajanje receptov
+3. Dodajanje receptov<br>
 Uporabnik lahko doda svoj recept v aplikacijo, vključno s sestavinami, postopkom priprave in dodatnimi informacijami. Ta funkcionalnost omogoča širjenje baze receptov in prispevek k skupnosti.
 
-4. Urejanje/Brisanje svojih receptov
+4. Urejanje/Brisanje svojih receptov<br>
 Uporabnik ima možnost urejanja ali brisanja receptov, ki jih je sam dodal. S tem zagotavlja, da so njegovi recepti točni in posodobljeni, ali pa odstrani recepte, ki jih več ne želi deliti.
 
-5. Shranjevanje receptov med priljubljene
+5. Shranjevanje receptov med priljubljene<br>
 Uporabnik lahko shranjuje sebi najljubše recepte v seznam priljubljenih za lažji dostop in kasnejšo uporabo. Ta funkcionalnost omogoča hiter dostop do receptov, ki so uporabniku najbolj všeč ali jih pogosto uporablja.
 
-6. Pisanje komentarjev/ocen
+6. Pisanje komentarjev/ocen<br>
 Uporabnik lahko oceni recept in pusti komentar, s čimer prispeva svoje mnenje ali nasvete za izboljšave. Komentarji in ocene so v pomoč drugim uporabnikom pri izbiri receptov ter izboljšajo interaktivnost in zanesljivost vsebine na platformi.
 
 
