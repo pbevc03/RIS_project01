@@ -4,7 +4,7 @@ Spletna rešitev je razdeljena na:
 * Backend(Spring Boot): za povezavo z podatkovno bazo
 * Frontend(React): uporabniški vmesnik
 
-# Člani ekipe
+## Člani ekipe
 * Vid Bezget
 * Patrik Bevc
 * Jure Nadrah
