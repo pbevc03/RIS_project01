@@ -4,6 +4,11 @@ Spletna rešitev je razdeljena na:
 * Backend(Spring Boot): za povezavo z podatkovno bazo
 * Frontend(React): uporabniški vmesnik
 
+# Člani ekipe
+* Vid Bezget
+* Patrik Bevc
+* Jure Nadrah
+
 ## Dokumentacij za razvijalce
 Projekt je razdeljen na:
 ### Backend
@@ -50,27 +55,6 @@ Narejen z React strukturnim ogrodjem.
 Nove funkcionalnosti pred objavo stestirajte.<br> 
 Nove funkcionalnosti prav tako objavite na nov branch tako da lahko admin tega projekta pregleda te funkcionalnosti. 
 
-## Diagram primerov uporabe
-![DPU-Recepti](https://github.com/user-attachments/assets/2f77de36-c915-44fa-8b45-b414bc73529a)
-1. Pregled receptov<br>
-Uporabnik lahko pregleduje recepte v aplikacije, ter razširi pregled receptov z uporabo iskalnika za določene besede (npr. vrsta jedi, imena sestavin) ali dodatno zoži prikazane recepte glede na različne filtre, kot so čas priprave, sestavine ali prehranske zahteve.
-
-2. Ogled podrobnosti recepta<br>
-Uporabnik lahko ogleda podrobnosti izbranega recepta, kot so seznam sestavin, navodila za pripravo, predviden čas in zahtevnost. S tem je omogočen bolj poglobljen vpogled v recept, preden se uporabnik odloči za pripravo ali shranjevanje.
-
-3. Dodajanje receptov<br>
-Uporabnik lahko doda svoj recept v aplikacijo, vključno s sestavinami, postopkom priprave in dodatnimi informacijami. Ta funkcionalnost omogoča širjenje baze receptov in prispevek k skupnosti.
-
-4. Urejanje/Brisanje svojih receptov<br>
-Uporabnik ima možnost urejanja ali brisanja receptov, ki jih je sam dodal. S tem zagotavlja, da so njegovi recepti točni in posodobljeni, ali pa odstrani recepte, ki jih več ne želi deliti.
-
-5. Shranjevanje receptov med priljubljene<br>
-Uporabnik lahko shranjuje sebi najljubše recepte v seznam priljubljenih za lažji dostop in kasnejšo uporabo. Ta funkcionalnost omogoča hiter dostop do receptov, ki so uporabniku najbolj všeč ali jih pogosto uporablja.
-
-6. Pisanje komentarjev/ocen<br>
-Uporabnik lahko oceni recept in pusti komentar, s čimer prispeva svoje mnenje ali nasvete za izboljšave. Komentarji in ocene so v pomoč drugim uporabnikom pri izbiri receptov ter izboljšajo interaktivnost in zanesljivost vsebine na platformi.
-
-
 ### Orodja
 #### Backend
 * Spring Boot(2.5.4 ali novejša)
@@ -94,3 +78,24 @@ Naša spletna stran z recepti je ustvarjena za vse ljubitelje kuhanja, saj omogo
 
 ### Kako aplikacija rešuje uporabniški problem
 Aplikacija poenostavi iskanje receptov glede na čas, sestavine in prehranske zahteve, s čimer uporabnikom prihrani čas pri načrtovanju obrokov. 
+
+
+## Diagram primerov uporabe
+![DPU-Recepti](https://github.com/user-attachments/assets/2f77de36-c915-44fa-8b45-b414bc73529a)
+1. Pregled receptov<br>
+Uporabnik lahko pregleduje recepte v aplikacije, ter razširi pregled receptov z uporabo iskalnika za določene besede (npr. vrsta jedi, imena sestavin) ali dodatno zoži prikazane recepte glede na različne filtre, kot so čas priprave, sestavine ali prehranske zahteve.
+
+2. Ogled podrobnosti recepta<br>
+Uporabnik lahko ogleda podrobnosti izbranega recepta, kot so seznam sestavin, navodila za pripravo, predviden čas in zahtevnost. S tem je omogočen bolj poglobljen vpogled v recept, preden se uporabnik odloči za pripravo ali shranjevanje.
+
+3. Dodajanje receptov<br>
+Uporabnik lahko doda svoj recept v aplikacijo, vključno s sestavinami, postopkom priprave in dodatnimi informacijami. Ta funkcionalnost omogoča širjenje baze receptov in prispevek k skupnosti.
+
+4. Urejanje/Brisanje svojih receptov<br>
+Uporabnik ima možnost urejanja ali brisanja receptov, ki jih je sam dodal. S tem zagotavlja, da so njegovi recepti točni in posodobljeni, ali pa odstrani recepte, ki jih več ne želi deliti.
+
+5. Shranjevanje receptov med priljubljene<br>
+Uporabnik lahko shranjuje sebi najljubše recepte v seznam priljubljenih za lažji dostop in kasnejšo uporabo. Ta funkcionalnost omogoča hiter dostop do receptov, ki so uporabniku najbolj všeč ali jih pogosto uporablja.
+
+6. Pisanje komentarjev/ocen<br>
+Uporabnik lahko oceni recept in pusti komentar, s čimer prispeva svoje mnenje ali nasvete za izboljšave. Komentarji in ocene so v pomoč drugim uporabnikom pri izbiri receptov ter izboljšajo interaktivnost in zanesljivost vsebine na platformi.
