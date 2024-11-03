@@ -51,7 +51,7 @@ Nove funkcionalnosti pred objavo stestirajte.<br>
 Nove funkcionalnosti prav tako objavite na nov branch tako da lahko admin tega projekta pregleda te funkcionalnosti. 
 
 ## Diagram primerov uporabe
-![DPU-Recepti](https://github.com/user-attachments/assets/11d5d116-2eba-414e-8e41-5edc60b24d87 | width=200)
+![DPU-Recepti](https://github.com/user-attachments/assets/2f77de36-c915-44fa-8b45-b414bc73529a)
 1. Pregled receptov<br>
 Uporabnik lahko pregleduje recepte v aplikacije, ter razširi pregled receptov z uporabo iskalnika za določene besede (npr. vrsta jedi, imena sestavin) ali dodatno zoži prikazane recepte glede na različne filtre, kot so čas priprave, sestavine ali prehranske zahteve.
 
