@@ -118,12 +118,14 @@ Uporabnik lahko oceni recept in pusti komentar, s čimer prispeva svoje mnenje a
 
 
 ## Razredni diagram
-<img width="620" alt="Picture 1" src="https://github.com/user-attachments/assets/ccc5cb64-e074-4628-841b-866fcac684a7">
 
+<img width="620" alt="Picture 1" src="https://github.com/user-attachments/assets/ccc5cb64-e074-4628-841b-866fcac684a7">
 <br>
- Ciljna publika
+
+### Ključne metode in njihove naloge
 <br>
-Recepti
+
+Recepti<br>
 getIme():<br>
 •	Ta metoda vrne ime recepta. Namenjena je za pridobivanje imena recepta.
  <br>
@@ -139,6 +141,7 @@ setIme():<br>
 setSestavine():<br>
 •	Dodajanje sestavin. To omogoča spreminjanje ali dodajanje novih sestavin receptu.
 <br>
+
 Dostopnost in manipulacija s podatki<br>
  Metode:<br>
 -	getIme()<br>
