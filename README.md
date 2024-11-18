@@ -118,9 +118,10 @@ Uporabnik lahko oceni recept in pusti komentar, s čimer prispeva svoje mnenje a
 
 
 ## Razredni diagram
-<img width="468" alt="image" src="https://github.com/user-attachments/assets/d7da9f40-3ffa-43d4-87bc-b2a01ffaeba4">
+!<img width="468" alt="Picture 1" src="https://github.com/user-attachments/assets/ccc5cb64-e074-4628-841b-866fcac684a7">
+
 <br>
-### Ključne metode in njihove naloge
+### Ciljna publika
 <br>
 Recepti
 getIme():<br>
