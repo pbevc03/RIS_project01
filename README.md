@@ -120,7 +120,7 @@ Uporabnik lahko oceni recept in pusti komentar, s čimer prispeva svoje mnenje a
 ## Razredni diagram
 <img width="468" alt="image" src="https://github.com/user-attachments/assets/d7da9f40-3ffa-43d4-87bc-b2a01ffaeba4">
 <br>
-Ključne metode in njihove naloge
+### Ključne metode in njihove naloge
 <br>
 Recepti
 getIme():<br>
@@ -144,12 +144,13 @@ Dostopnost in manipulacija s podatki<br>
 -	getSestavine()<br>
 -	getNavodila() <br>
 omogočajo enostaven dostop do informacij o receptu. <br>
- 
+  <br>
 Metode:<br>
 -	setIme()<br>
 -	setSestavina()  <br>
 -	setSestavine() <br>
 zagotavljajo fleksibilnost pri spremembah teh podatkov.<br>
+ <br>
 
 Uporabnik<br>
 •	dodajRecept(Recept recept): Uporabniku omogoča ustvarjanje novega recepta z dodajanjem podrobnosti, kot so naslov, sestavine in navodila.<br>
@@ -158,10 +159,12 @@ Uporabnik<br>
 •	shraniReceptMedPriljubljene(Recept recept): Doda recept na seznam uporabnikovih priljubljenih.<br>
 •	napišiKomentar(String komentar): Uporabniku omogoča, da doda komentar ali oceno k določenemu receptu.<br>
 •	izberiKategorijo(): Uporabniku omogoča izbiro kategorije za brskanje ali filtriranje receptov.<br>
+ <br>
 
 Priljubljeni<br>
 •	dodajReceptMedPriljubljene(Recept recept): Doda recept na seznam uporabnikovih priljubljenih receptov.<br>
 •	odstraniReceptIzPriljubljenih(Recept recept): Odstrani recept s seznama uporabnikovih priljubljenih receptov.<br>
+ <br>
 
 Iskanje<br>
 •	iščiRecept(String input): Išče recepte na podlagi ključnih besed, ki jih vnese uporabnik.<br>
