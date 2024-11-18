@@ -117,30 +117,32 @@ Uporabnik lahko shranjuje sebi najljubše recepte v seznam priljubljenih za laž
 Uporabnik lahko oceni recept in pusti komentar, s čimer prispeva svoje mnenje ali nasvete za izboljšave. Komentarji in ocene so v pomoč drugim uporabnikom pri izbiri receptov ter izboljšajo interaktivnost in zanesljivost vsebine na platformi.
 
 
+
 ## Razredni diagram
 
 <img width="620" alt="Picture 1" src="https://github.com/user-attachments/assets/ccc5cb64-e074-4628-841b-866fcac684a7">
 <br>
 
-## Ključne metode in njihove naloge
-### Recepti
-getIme():<br>
+### Ključne metode in njihove naloge
+
+#### Recepti
+**getIme()**:<br>
 •	Ta metoda vrne ime recepta. Namenjena je za pridobivanje imena recepta.
  <br>
-getSestavine():<br>
+**getSestavine()**:<br>
 •	Vrne sestavine, ki so potrebne za pripravo recepta. Omogoča dostop do teh sestavin za prikaz ali nadaljnjo obdelavo.
  <br>
-getNavodila():<br>
+**getNavodila()**:<br>
 •	Vrne navodila za pripravo recepta. Ta metoda omogoča pridobitev informacij o tem, kako pripraviti jed.
  <br>
-setIme():<br>
+**setIme()**:<br>
 •	Nastavi ime recepta. Omogoča uporabniku ali aplikaciji, da spremeni ime obstoječega recepta.
  <br>
-setSestavine():<br>
+**setSestavine()**:<br>
 •	Dodajanje sestavin. To omogoča spreminjanje ali dodajanje novih sestavin receptu.
 <br>
 
-### Dostopnost in manipulacija s podatki
+#### Dostopnost in manipulacija s podatki
  Metode:<br>
 -	getIme()<br>
 -	getSestavine()<br>
@@ -154,21 +156,23 @@ Metode:<br>
 zagotavljajo fleksibilnost pri spremembah teh podatkov.<br>
  <br>
 
-### Uporabnik
-•	dodajRecept(Recept recept): Uporabniku omogoča ustvarjanje novega recepta z dodajanjem podrobnosti, kot so naslov, sestavine in navodila.<br>
-•	urediRecept(Recept recept): Uporabniku omogoča urejanje obstoječega recepta, ki ga je ustvaril.<br>
-•	izbrišiRecept(Recept recept): Uporabniku omogoča brisanje recepta, ki ga ne želi več hraniti.<br>
-•	shraniReceptMedPriljubljene(Recept recept): Doda recept na seznam uporabnikovih priljubljenih.<br>
-•	napišiKomentar(String komentar): Uporabniku omogoča, da doda komentar ali oceno k določenemu receptu.<br>
-•	izberiKategorijo(): Uporabniku omogoča izbiro kategorije za brskanje ali filtriranje receptov.<br>
+#### Uporabnik
+•	**dodajRecept(Recept recept): Uporabniku omogoča ustvarjanje novega recepta z dodajanjem podrobnosti, kot so naslov, sestavine in navodila.<br>
+•	**urediRecept(Recept recept)**: Uporabniku omogoča urejanje obstoječega recepta, ki ga je ustvaril.<br>
+•	**izbrišiRecept(Recept recept)**: Uporabniku omogoča brisanje recepta, ki ga ne želi več hraniti.<br>
+•	**shraniReceptMedPriljubljene(Recept recept)**: Doda recept na seznam uporabnikovih priljubljenih.<br>
+•	**napišiKomentar(String komentar)**: Uporabniku omogoča, da doda komentar ali oceno k določenemu receptu.<br>
+•	**izberiKategorijo()**: Uporabniku omogoča izbiro kategorije za brskanje ali filtriranje receptov.<br>
  <br>
 
-### Priljubljeni
-•	dodajReceptMedPriljubljene(Recept recept): Doda recept na seznam uporabnikovih priljubljenih receptov.<br>
-•	odstraniReceptIzPriljubljenih(Recept recept): Odstrani recept s seznama uporabnikovih priljubljenih receptov.<br>
+#### Priljubljeni
+•	**dodajReceptMedPriljubljene(Recept recept)**: Doda recept na seznam uporabnikovih priljubljenih receptov.<br>
+•	**odstraniReceptIzPriljubljenih(Recept recept)**: Odstrani recept s seznama uporabnikovih priljubljenih receptov.<br>
  <br>
 
-### Iskanje
-•	iščiRecept(String input): Išče recepte na podlagi ključnih besed, ki jih vnese uporabnik.<br>
-•	uporabiFiltre(String filter): Uporablja dodatne filtre (npr. kategorija, ocena) za zožitev rezultatov iskanja.<br>
+#### Iskanje
+•	**iščiRecept(String input)**: Išče recepte na podlagi ključnih besed, ki jih vnese uporabnik.<br>
+•	**uporabiFiltre(String filter)**: Uporablja dodatne filtre (npr. kategorija, ocena) za zožitev rezultatov iskanja.<br>
+
+
 
