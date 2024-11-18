@@ -96,7 +96,8 @@ Recepti - Navodila in sestavine za pripravo jedi.
 
 
 ## Diagram primerov uporabe
-![DPU-Recepti](https://github.com/user-attachments/assets/2f77de36-c915-44fa-8b45-b414bc73529a)
+![DPU-Recepti_v3 drawio](https://github.com/user-attachments/assets/80bb3fe3-0281-4cb8-98fc-27dd65c7cbf3)
+
 1. Pregled receptov<br>
 Uporabnik lahko pregleduje recepte v aplikacije, ter razširi pregled receptov z uporabo iskalnika za določene besede (npr. vrsta jedi, imena sestavin) ali dodatno zoži prikazane recepte glede na različne filtre, kot so čas priprave, sestavine ali prehranske zahteve.
 
@@ -114,3 +115,52 @@ Uporabnik lahko shranjuje sebi najljubše recepte v seznam priljubljenih za laž
 
 6. Pisanje komentarjev/ocen<br>
 Uporabnik lahko oceni recept in pusti komentar, s čimer prispeva svoje mnenje ali nasvete za izboljšave. Komentarji in ocene so v pomoč drugim uporabnikom pri izbiri receptov ter izboljšajo interaktivnost in zanesljivost vsebine na platformi.
+
+
+## Razredni diagram
+<img width="468" alt="image" src="https://github.com/user-attachments/assets/d7da9f40-3ffa-43d4-87bc-b2a01ffaeba4">
+Ključne metode in njihove naloge
+
+Recepti
+getIme():
+•	Ta metoda vrne ime recepta. Namenjena je za pridobivanje imena recepta.
+ 
+getSestavine():
+•	Vrne sestavine, ki so potrebne za pripravo recepta. Omogoča dostop do teh sestavin za prikaz ali nadaljnjo obdelavo.
+ 
+getNavodila():
+•	Vrne navodila za pripravo recepta. Ta metoda omogoča pridobitev informacij o tem, kako pripraviti jed.
+ 
+setIme():
+•	Nastavi ime recepta. Omogoča uporabniku ali aplikaciji, da spremeni ime obstoječega recepta.
+ 
+setSestavine():
+•	Dodajanje sestavin. To omogoča spreminjanje ali dodajanje novih sestavin receptu.
+Dostopnost in manipulacija s podatki
+ Metode:
+-	getIme()
+-	getSestavine()
+-	getNavodila() 
+omogočajo enostaven dostop do informacij o receptu. 
+ 
+Metode:
+-	setIme()
+-	setSestavina()  
+-	setSestavine() 
+zagotavljajo fleksibilnost pri spremembah teh podatkov.
+
+Uporabnik
+•	dodajRecept(Recept recept): Uporabniku omogoča ustvarjanje novega recepta z dodajanjem podrobnosti, kot so naslov, sestavine in navodila.
+•	urediRecept(Recept recept): Uporabniku omogoča urejanje obstoječega recepta, ki ga je ustvaril.
+•	izbrišiRecept(Recept recept): Uporabniku omogoča brisanje recepta, ki ga ne želi več hraniti.
+•	shraniReceptMedPriljubljene(Recept recept): Doda recept na seznam uporabnikovih priljubljenih.
+•	napišiKomentar(String komentar): Uporabniku omogoča, da doda komentar ali oceno k določenemu receptu.
+•	izberiKategorijo(): Uporabniku omogoča izbiro kategorije za brskanje ali filtriranje receptov.
+
+Priljubljeni
+•	dodajReceptMedPriljubljene(Recept recept): Doda recept na seznam uporabnikovih priljubljenih receptov.
+•	odstraniReceptIzPriljubljenih(Recept recept): Odstrani recept s seznama uporabnikovih priljubljenih receptov.
+Iskanje
+•	iščiRecept(String input): Išče recepte na podlagi ključnih besed, ki jih vnese uporabnik.
+•	uporabiFiltre(String filter): Uporablja dodatne filtre (npr. kategorija, ocena) za zožitev rezultatov iskanja.
+
