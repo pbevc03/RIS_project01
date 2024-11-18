@@ -123,9 +123,9 @@ Uporabnik lahko oceni recept in pusti komentar, s čimer prispeva svoje mnenje a
 <img width="620" alt="Picture 1" src="https://github.com/user-attachments/assets/ccc5cb64-e074-4628-841b-866fcac684a7">
 <br>
 
-### Ključne metode in njihove naloge
+## Ključne metode in njihove naloge
 
-#### Recepti
+### Recepti
 **getIme()**:<br>
 •	Ta metoda vrne ime recepta. Namenjena je za pridobivanje imena recepta.
  <br>
@@ -142,7 +142,7 @@ Uporabnik lahko oceni recept in pusti komentar, s čimer prispeva svoje mnenje a
 •	Dodajanje sestavin. To omogoča spreminjanje ali dodajanje novih sestavin receptu.
 <br>
 
-#### Dostopnost in manipulacija s podatki
+### Dostopnost in manipulacija s podatki
  Metode:<br>
 -	getIme()<br>
 -	getSestavine()<br>
@@ -156,8 +156,8 @@ Metode:<br>
 zagotavljajo fleksibilnost pri spremembah teh podatkov.<br>
  <br>
 
-#### Uporabnik
-•	**dodajRecept(Recept recept): Uporabniku omogoča ustvarjanje novega recepta z dodajanjem podrobnosti, kot so naslov, sestavine in navodila.<br>
+### Uporabnik
+•	**dodajRecept(Recept recept)**: Uporabniku omogoča ustvarjanje novega recepta z dodajanjem podrobnosti, kot so naslov, sestavine in navodila.<br>
 •	**urediRecept(Recept recept)**: Uporabniku omogoča urejanje obstoječega recepta, ki ga je ustvaril.<br>
 •	**izbrišiRecept(Recept recept)**: Uporabniku omogoča brisanje recepta, ki ga ne želi več hraniti.<br>
 •	**shraniReceptMedPriljubljene(Recept recept)**: Doda recept na seznam uporabnikovih priljubljenih.<br>
@@ -165,12 +165,12 @@ zagotavljajo fleksibilnost pri spremembah teh podatkov.<br>
 •	**izberiKategorijo()**: Uporabniku omogoča izbiro kategorije za brskanje ali filtriranje receptov.<br>
  <br>
 
-#### Priljubljeni
+### Priljubljeni
 •	**dodajReceptMedPriljubljene(Recept recept)**: Doda recept na seznam uporabnikovih priljubljenih receptov.<br>
 •	**odstraniReceptIzPriljubljenih(Recept recept)**: Odstrani recept s seznama uporabnikovih priljubljenih receptov.<br>
  <br>
 
-#### Iskanje
+### Iskanje
 •	**iščiRecept(String input)**: Išče recepte na podlagi ključnih besed, ki jih vnese uporabnik.<br>
 •	**uporabiFiltre(String filter)**: Uporablja dodatne filtre (npr. kategorija, ocena) za zožitev rezultatov iskanja.<br>
 
