@@ -21,5 +21,5 @@ public class Recept {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private int idrecept;
 }
