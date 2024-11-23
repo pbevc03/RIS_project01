@@ -96,10 +96,11 @@ Recepti - Navodila in sestavine za pripravo jedi.
 
 
 ## Diagram primerov uporabe
-![DPU-Recepti_v3 drawio](https://github.com/user-attachments/assets/80bb3fe3-0281-4cb8-98fc-27dd65c7cbf3)
+![DPU-Recepti_v4 drawio](https://github.com/user-attachments/assets/bd09443e-c4a1-4e09-9b0a-f1fd69384df2)
 
 1. Pregled receptov<br>
-Uporabnik lahko pregleduje recepte v aplikacije, ter razširi pregled receptov z uporabo iskalnika za določene besede (npr. vrsta jedi, imena sestavin) ali dodatno zoži prikazane recepte glede na različne filtre, kot so čas priprave, sestavine ali prehranske zahteve.
+
+Uporabnik lahko pregleduje recepte v aplikacije, ter razširi pregled receptov z uporabo iskalnika za določene besede (npr. vrsta jedi, imena sestavin).
 
 2. Ogled podrobnosti recepta<br>
 Uporabnik lahko ogleda podrobnosti izbranega recepta, kot so seznam sestavin, navodila za pripravo, predviden čas in zahtevnost. S tem je omogočen bolj poglobljen vpogled v recept, preden se uporabnik odloči za pripravo ali shranjevanje.
@@ -110,10 +111,7 @@ Uporabnik lahko doda svoj recept v aplikacijo, vključno s sestavinami, postopko
 4. Urejanje/Brisanje svojih receptov<br>
 Uporabnik ima možnost urejanja ali brisanja receptov, ki jih je sam dodal. S tem zagotavlja, da so njegovi recepti točni in posodobljeni, ali pa odstrani recepte, ki jih več ne želi deliti.
 
-5. Shranjevanje receptov med priljubljene<br>
-Uporabnik lahko shranjuje sebi najljubše recepte v seznam priljubljenih za lažji dostop in kasnejšo uporabo. Ta funkcionalnost omogoča hiter dostop do receptov, ki so uporabniku najbolj všeč ali jih pogosto uporablja.
-
-6. Pisanje komentarjev/ocen<br>
+5. Pisanje komentarjev/ocen<br>
 Uporabnik lahko oceni recept in pusti komentar, s čimer prispeva svoje mnenje ali nasvete za izboljšave. Komentarji in ocene so v pomoč drugim uporabnikom pri izbiri receptov ter izboljšajo interaktivnost in zanesljivost vsebine na platformi.
 
 
