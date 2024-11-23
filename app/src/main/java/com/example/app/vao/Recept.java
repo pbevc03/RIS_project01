@@ -22,4 +22,8 @@ public class Recept {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idrecept;
+
+    @ManyToOne
+    @JoinColumn(name = "iduporabnik")
+    private User user;
 }
