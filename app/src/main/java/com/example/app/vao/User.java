@@ -1,59 +1,35 @@
 package com.example.app.vao;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 @Data
 @NoArgsConstructor
-@Entity
+@AllArgsConstructor
+@Builder
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int userID;
+    private Long id;
 
+    @Column(unique = true, nullable = false)
     private String username;
-    private String password;
+
+    @Column(unique = true, nullable = false)
     private String email;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "iduporabnik")
-    private List<Recept> recepti = new ArrayList<>();
+    @Column(nullable = false)
+    private String password;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "user_favorites")
-    private List<Recept> favoriteRecepti = new ArrayList<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Recipe> recipes;
 
-    public void addRecept(Recept recept) {
-        recept.setUser(this);
-        recepti.add(recept);
-    }
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Comment> comments;
 
-    public void editRecept(int id, Recept updatedRecept) {
-        for (Recept recept : recepti) {
-            if (recept.getIdrecept() == id) {
-                recept.setIme(updatedRecept.getIme());
-                recept.setSestavine(updatedRecept.getSestavine());
-                recept.setNavodila(updatedRecept.getNavodila());
-                return;
-            }
-        }
-    }
-
-    public void deleteRecept(int id) {
-        recepti.removeIf(recept -> recept.getIdrecept() == id);
-    }
-
-    public void saveReceptToFavorites(Recept recept) {
-        if (!favoriteRecepti.contains(recept)) {
-            favoriteRecepti.add(recept);
-        }
-    }
-
-    public void writeComment(String comment) {
-    }
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Favorite> favorites;
 }

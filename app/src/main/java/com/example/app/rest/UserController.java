@@ -1,9 +1,9 @@
 package com.example.app.rest;
 
 import com.example.app.dao.UserRepository;
+import com.example.app.dto.UserDTO;
 import com.example.app.vao.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -15,36 +15,41 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
+    // Get all users
+    @GetMapping
+    public Iterable<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    // Create a new user
     @PostMapping
-    public User createUser(@RequestBody User user) {
+    public User createUser(@RequestBody UserDTO userDTO) {
+        User user = new User();
+        user.setUsername(userDTO.getUsername());
+        user.setEmail(userDTO.getEmail());
+        user.setPassword(userDTO.getPassword());
         return userRepository.save(user);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getUser(@PathVariable int id) {
-        Optional<User> user = userRepository.findById(id);
-        return user.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-    }
-
+    // Update an existing user
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody User updatedUser) {
-        Optional<User> existingUser = userRepository.findById(id);
-        if (existingUser.isPresent()) {
-            User user = existingUser.get();
-            user.setUsername(updatedUser.getUsername());
-            user.setEmail(updatedUser.getEmail());
-            user.setPassword(updatedUser.getPassword());
-            return ResponseEntity.ok(userRepository.save(user));
-        }
-        return ResponseEntity.notFound().build();
+    public User updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
+        User user = userRepository.findById(id).orElseThrow(() ->
+                new RuntimeException("User not found with ID: " + id));
+
+        if (userDTO.getUsername() != null) user.setUsername(userDTO.getUsername());
+        if (userDTO.getEmail() != null) user.setEmail(userDTO.getEmail());
+        if (userDTO.getPassword() != null) user.setPassword(userDTO.getPassword());
+
+        return userRepository.save(user);
     }
 
+    // Delete a user
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable int id) {
-        if (userRepository.existsById(id)) {
-            userRepository.deleteById(id);
-            return ResponseEntity.noContent().build();
+    public void deleteUser(@PathVariable Long id) {
+        if (!userRepository.existsById(id)) {
+            throw new RuntimeException("User not found with ID: " + id);
         }
-        return ResponseEntity.notFound().build();
+        userRepository.deleteById(id);
     }
 }
