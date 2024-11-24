@@ -34,5 +34,6 @@ public class User {
     private List<Comment> comments;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Favorite> favorites;
 }

@@ -31,6 +31,10 @@ public class Recipe {
     @JsonManagedReference // Manage the relationship from the Recipe side
     private List<Comment> comments;
 
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
+    @JsonManagedReference // Allow serialization of favorites from the Recipe side
+    private List<Favorite> favorites;
+
     private String title;
 
     @Column(length = 1000)
