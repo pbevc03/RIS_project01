@@ -20,6 +20,9 @@ function App() {
         fetchRecipes();
     }, []);
 
+    const handleSearchChange = (e) => {
+        setSearchQuery(e.target.value);
+    };
     const fetchRecipes = async () => {
         try {
             const response = await fetch('http://localhost:8080/recipes');
@@ -150,6 +153,19 @@ function App() {
                         </div>
                     </div>
                 </div>
+                {/* Search bar */}
+                <div className="search-bar mt-3">
+                        <div className="input-group">
+                            <input
+                                type="text"
+                                className="form-control custom-search"
+                                placeholder="Išči recepte..."
+                                value={searchQuery}
+                                onChange={handleSearchChange}
+                            />
+                            <button className="btn btn-secondary" onClick={() => setSearchQuery('')}>Počisti</button>
+                        </div>
+                    </div>
             </header>
 
             {/* Main content */}
