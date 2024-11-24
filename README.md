@@ -99,7 +99,6 @@ Recepti - Navodila in sestavine za pripravo jedi.
 ![DPU-Recepti_v5 drawio](https://github.com/user-attachments/assets/b5098803-8809-4ed5-a41a-71e9604ddc00)
 
 1. Pregled receptov<br>
-
 Uporabnik lahko pregleduje recepte v aplikacije, ter razširi pregled receptov z uporabo iskalnika za določene besede (npr. vrsta jedi, imena sestavin).
 
 2. Ogled podrobnosti recepta<br>
