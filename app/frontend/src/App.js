@@ -4,76 +4,132 @@ import './App.css';
 
 function App() {
     const [recipes, setRecipes] = useState([]);
-    const [recipe, setRecipe] = useState({ id: null, ime: '', sestavine: '', navodila: '' });
-    const [isEditing, setIsEditing] = useState(false);
+    const [selectedRecipe, setSelectedRecipe] = useState(null);
+    const [comments, setComments] = useState([]);
+    const [newComment, setNewComment] = useState('');
+    const [newRecipe, setNewRecipe] = useState({
+        title: '',
+        description: '',
+        ingredients: '',
+        instructions: '',
+    });
+    const [editingRecipeId, setEditingRecipeId] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
-    const [currentPage, setCurrentPage] = useState(1);
-    const [recipesPerPage] = useState(3);
 
     useEffect(() => {
         fetchRecipes();
     }, []);
 
     const fetchRecipes = async () => {
-        const response = await fetch('http://localhost:8080/recepti');
-        const data = await response.json();
-        setRecipes(data);
-    };
-
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setRecipe({ ...recipe, [name]: value });
-    };
-
-    const handleSearchChange = (e) => {
-        setSearchQuery(e.target.value);
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        if (isEditing) {
-            await fetch(`http://localhost:8080/recepti/${recipe.id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(recipe),
-            });
-        } else {
-            await fetch('http://localhost:8080/recepti', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(recipe),
-            });
+        try {
+            const response = await fetch('http://localhost:8080/recipes');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            setRecipes(data);
+        } catch (error) {
+            console.error('Error fetching recipes:', error);
         }
-        fetchRecipes();
-        setRecipe({ id: null, ime: '', sestavine: '', navodila: '' });
-        setIsEditing(false);
     };
 
-    const editRecipe = (recipe) => {
-        setRecipe(recipe);
-        setIsEditing(true);
+    const fetchComments = async (recipeId) => {
+        try {
+            const response = await fetch(`http://localhost:8080/comments/recipe/${recipeId}`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            setComments(data);
+        } catch (error) {
+            console.error('Error fetching comments:', error);
+        }
     };
 
-    const deleteRecipe = async (id) => {
-        await fetch(`http://localhost:8080/recepti/${id}`, {
-            method: 'DELETE',
+    const handleRecipeClick = (recipe) => {
+        setSelectedRecipe(recipe);
+        fetchComments(recipe.id);
+    };
+
+    const handleNewRecipeChange = (e) => {
+        const { name, value } = e.target;
+        setNewRecipe((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const handleCreateOrEditRecipe = async () => {
+        const url = editingRecipeId
+            ? `http://localhost:8080/recipes/${editingRecipeId}`
+            : 'http://localhost:8080/recipes?userId=1'; // tukaj daj user id trenutnega uporabnika **********++++++++++++++++++++++++++++
+        const method = editingRecipeId ? 'PUT' : 'POST';
+
+        try {
+            await fetch(url, {
+                method,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newRecipe),
+            });
+            setNewRecipe({ title: '', description: '', ingredients: '', instructions: '' });
+            setEditingRecipeId(null);
+            fetchRecipes();
+        } catch (error) {
+            console.error(`Error ${editingRecipeId ? 'editing' : 'creating'} recipe:`, error);
+        }
+    };
+
+    const handleEditClick = (recipe) => {
+        setEditingRecipeId(recipe.id);
+        setNewRecipe({
+            title: recipe.title,
+            description: recipe.description,
+            ingredients: recipe.ingredients,
+            instructions: recipe.instructions,
         });
-        fetchRecipes();
     };
 
+    const handleDeleteRecipe = async (id) => {
+        try {
+            await fetch(`http://localhost:8080/recipes/${id}`, { method: 'DELETE' });
+            fetchRecipes();
+        } catch (error) {
+            console.error('Error deleting recipe:', error);
+        }
+    };
 
-    const indexOfLastRecipe = currentPage * recipesPerPage;
-    const indexOfFirstRecipe = indexOfLastRecipe - recipesPerPage;
-    const currentRecipes = recipes.slice(indexOfFirstRecipe, indexOfLastRecipe);
+    const handleCommentChange = (e) => {
+        setNewComment(e.target.value);
+    };
 
+    const handleAddComment = async () => {
+        if (!selectedRecipe) return;
+        try {
+            await fetch('http://localhost:8080/comments', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    content: newComment,
+                    userId: 1, // tukaj daj user id trenutnega uporabnika **********++++++++++++++++++++++++++++++++++++
+                    recipeId: selectedRecipe.id,
+                }),
+            });
+            setNewComment('');
+            fetchComments(selectedRecipe.id);
+        } catch (error) {
+            console.error('Error adding comment:', error);
+        }
+    };
 
-    const filteredRecipes = currentRecipes.filter((rec) =>
-        rec.ime.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        rec.sestavine.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-
-    const paginate = (pageNumber) => setCurrentPage(pageNumber);
-    const totalPages = Math.ceil(recipes.length / recipesPerPage);
+    const handleDeleteComment = async (commentId) => {
+        try {
+            await fetch(`http://localhost:8080/comments/${commentId}`, { method: 'DELETE' });
+            if (selectedRecipe) fetchComments(selectedRecipe.id);
+        } catch (error) {
+            console.error('Error deleting comment:', error);
+        }
+    };
 
     return (
         <div className="App">
@@ -93,92 +149,104 @@ function App() {
                             <button className="btn btn-success">Registracija</button>
                         </div>
                     </div>
-
-                    {/* Search bar */}
-                    <div className="search-bar mt-3">
-                        <div className="input-group">
-                            <input
-                                type="text"
-                                className="form-control custom-search"
-                                placeholder="Išči recepte..."
-                                value={searchQuery}
-                                onChange={handleSearchChange}
-                            />
-                            <button className="btn btn-secondary" onClick={() => setSearchQuery('')}>Počisti</button>
-                        </div>
-                    </div>
                 </div>
             </header>
 
             {/* Main content */}
             <main className="container">
                 <h2>Recepti</h2>
+                <div className="row">
+                    <div className="col-md-6">
+                        <ul className="list-group">
+                            {recipes
+                                .filter((r) => r.title.toLowerCase().includes(searchQuery.toLowerCase()))
+                                .map((recipe) => (
+                                    <li
+                                        key={recipe.id}
+                                        className="list-group-item d-flex justify-content-between align-items-center"
+                                        onClick={() => handleRecipeClick(recipe)}
+                                    >
+                                        {recipe.title}
+                                        <div>
+                                            <button className="btn btn-primary btn-sm me-2" onClick={() => handleEditClick(recipe)}>Edit</button>
+                                            <button className="btn btn-danger btn-sm" onClick={() => handleDeleteRecipe(recipe.id)}>Delete</button>
+                                        </div>
+                                    </li>
+                                ))}
+                        </ul>
+                    </div>
+                    <div className="col-md-6">
+                        {selectedRecipe && (
+                            <div>
+                                <h3>{selectedRecipe.title}</h3>
+                                <p>{selectedRecipe.description}</p>
+                                <p><strong>Ingredients:</strong> {selectedRecipe.ingredients}</p>
+                                <p><strong>Instructions:</strong> {selectedRecipe.instructions}</p>
 
-                {/* Recipe Form */}
-                <form onSubmit={handleSubmit} className="mb-4">
-                    <div className="form-group">
-                        <input
-                            type="text"
-                            className="form-control"
-                            name="ime"
-                            placeholder="Ime recepta"
-                            value={recipe.ime}
-                            onChange={handleInputChange}
-                            required
-                        />
+                                <h4>Comments</h4>
+                                <ul className="list-group">
+                                    {comments.map((comment) => (
+                                        <li key={comment.id} className="list-group-item d-flex justify-content-between align-items-center">
+                                            {comment.content}
+                                            <button
+                                                className="btn btn-danger btn-sm"
+                                                onClick={() => handleDeleteComment(comment.id)}
+                                            >
+                                                Delete
+                                            </button>
+                                        </li>
+                                    ))}
+                                </ul>
+                                <div className="input-group mt-3">
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        placeholder="Add a comment..."
+                                        value={newComment}
+                                        onChange={handleCommentChange}
+                                    />
+                                    <button className="btn btn-primary" onClick={handleAddComment}>Comment</button>
+                                </div>
+                            </div>
+                        )}
                     </div>
-                    <div className="form-group">
-                        <input
-                            type="text"
-                            className="form-control"
-                            name="sestavine"
-                            placeholder="Sestavine"
-                            value={recipe.sestavine}
-                            onChange={handleInputChange}
-                            required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <textarea
-                            className="form-control"
-                            name="navodila"
-                            placeholder="Navodila"
-                            value={recipe.navodila}
-                            onChange={handleInputChange}
-                            required
-                        />
-                    </div>
-                    <button type="submit" className={`btn btn-${isEditing ? 'warning' : 'primary'}`}>
-                        {isEditing ? 'Posodobi recept' : 'Dodaj recept'}
-                    </button>
-                    {isEditing && <button type="button" className="btn btn-secondary ml-2" onClick={() => setIsEditing(false)}>Prekliči</button>}
-                </form>
-
-                {/* Recipe List */}
-                <div className="recipe-list">
-                    {filteredRecipes.map((rec) => (
-                        <div className="recipe-item" key={rec.id}>
-                            <h3>{rec.ime}</h3>
-                            <p><strong>Sestavine:</strong> {rec.sestavine}</p>
-                            <p><strong>Navodila:</strong> {rec.navodila}</p>
-                            <button className="btn btn-warning mr-2" onClick={() => editRecipe(rec)}>Uredi</button>
-                            <button className="btn btn-danger" onClick={() => deleteRecipe(rec.id)}>Izbriši</button>
-                        </div>
-                    ))}
                 </div>
 
-                {/* Pagination Controls */}
-                <nav aria-label="Page navigation">
-                    <ul className="pagination justify-content-center mt-4">
-                        {Array.from({ length: totalPages }, (_, index) => (
-                            <li className={`page-item ${currentPage === index + 1 ? 'active' : ''}`} key={index}>
-                                <button className="page-link" onClick={() => paginate(index + 1)}>
-                                    {index + 1}
-                                </button>
-                            </li>
-                        ))}
-                    </ul>
-                </nav>
+                <h2 className="mt-4">{editingRecipeId ? 'Edit recipe' : 'Add new recipe'}</h2>
+                <div className="form-group">
+                    <input
+                        type="text"
+                        name="title"
+                        className="form-control mb-2"
+                        placeholder="Title"
+                        value={newRecipe.title}
+                        onChange={handleNewRecipeChange}
+                    />
+                    <textarea
+                        name="description"
+                        className="form-control mb-2"
+                        placeholder="Description"
+                        value={newRecipe.description}
+                        onChange={handleNewRecipeChange}
+                    ></textarea>
+                    <textarea
+                        name="ingredients"
+                        className="form-control mb-2"
+                        placeholder="Ingredients"
+                        value={newRecipe.ingredients}
+                        onChange={handleNewRecipeChange}
+                    ></textarea>
+                    <textarea
+                        name="instructions"
+                        className="form-control mb-2"
+                        placeholder="Instructions"
+                        value={newRecipe.instructions}
+                        onChange={handleNewRecipeChange}
+                    ></textarea>
+                    <button className="btn btn-success" onClick={handleCreateOrEditRecipe}>
+                        {editingRecipeId ? 'Save Changes' : 'Add Recipe'}
+                    </button>
+                </div>
             </main>
 
             {/* Footer */}
