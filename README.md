@@ -96,7 +96,7 @@ Recepti - Navodila in sestavine za pripravo jedi.
 
 
 ## Diagram primerov uporabe
-![DPU-Recepti_v4 drawio](https://github.com/user-attachments/assets/bd09443e-c4a1-4e09-9b0a-f1fd69384df2)
+![DPU-Recepti_v5 drawio](https://github.com/user-attachments/assets/b5098803-8809-4ed5-a41a-71e9604ddc00)
 
 1. Pregled receptov<br>
 
@@ -108,10 +108,13 @@ Uporabnik lahko ogleda podrobnosti izbranega recepta, kot so seznam sestavin, na
 3. Dodajanje receptov<br>
 Uporabnik lahko doda svoj recept v aplikacijo, vključno s sestavinami, postopkom priprave in dodatnimi informacijami. Ta funkcionalnost omogoča širjenje baze receptov in prispevek k skupnosti.
 
-4. Urejanje/Brisanje svojih receptov<br>
-Uporabnik ima možnost urejanja ali brisanja receptov, ki jih je sam dodal. S tem zagotavlja, da so njegovi recepti točni in posodobljeni, ali pa odstrani recepte, ki jih več ne želi deliti.
+4. Urejanje svojih receptov<br>
+Uporabnik ima možnost urejanja receptov, ki jih je sam dodal. S tem zagotavlja, da so njegovi recepti točni in posodobljeni.
 
-5. Pisanje komentarjev/ocen<br>
+5. Brisanje svojih receptov<br>
+Uporabnik ima možnost brisanja receptov, ki jih je sam dodal. S tem lahko odstrani recepte, ki jih več ne želi deliti.
+   
+6. Pisanje komentarjev<br>
 Uporabnik lahko oceni recept in pusti komentar, s čimer prispeva svoje mnenje ali nasvete za izboljšave. Komentarji in ocene so v pomoč drugim uporabnikom pri izbiri receptov ter izboljšajo interaktivnost in zanesljivost vsebine na platformi.
 
 
