@@ -29,10 +29,10 @@ public class CommentController {
     // Add a new comment
     @PostMapping
     public Comment createComment(@RequestBody CommentDTO commentDTO) {
-        User user = userRepository.findById(commentDTO.getUserId()).orElseThrow(() ->
-                new RuntimeException("User not found with ID: " + commentDTO.getUserId()));
-        Recipe recipe = recipeRepository.findById(commentDTO.getRecipeId()).orElseThrow(() ->
-                new RuntimeException("Recipe not found with ID: " + commentDTO.getRecipeId()));
+        User user = userRepository.findById(commentDTO.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + commentDTO.getUserId()));
+        Recipe recipe = recipeRepository.findById(commentDTO.getRecipeId())
+                .orElseThrow(() -> new RuntimeException("Recipe not found with ID: " + commentDTO.getRecipeId()));
 
         Comment comment = new Comment();
         comment.setContent(commentDTO.getContent());
@@ -44,23 +44,31 @@ public class CommentController {
 
     @GetMapping("/{id}")
     public Comment getCommentById(@PathVariable Long id) {
-        return commentRepository.findById(id).orElseThrow(() ->
-                new RuntimeException("Comment not found with ID: " + id));
+        return commentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Comment not found with ID: " + id));
     }
 
     // Get all comments by a specific user
     @GetMapping("/user/{userId}")
     public List<Comment> getCommentsByUser(@PathVariable Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() ->
-                new RuntimeException("User not found with ID: " + userId));
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
         return commentRepository.findByUser(user);
     }
 
     // Get all comments for a specific recipe
     @GetMapping("/recipe/{recipeId}")
     public List<Comment> getCommentsByRecipe(@PathVariable Long recipeId) {
-        Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(() ->
-                new RuntimeException("Recipe not found with ID: " + recipeId));
+        Recipe recipe = recipeRepository.findById(recipeId)
+                .orElseThrow(() -> new RuntimeException("Recipe not found with ID: " + recipeId));
         return commentRepository.findByRecipe(recipe);
+    }
+
+    // Delete a comment by ID
+    @DeleteMapping("/{id}")
+    public void deleteComment(@PathVariable Long id) {
+        Comment comment = commentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Comment not found with ID: " + id));
+        commentRepository.delete(comment);
     }
 }

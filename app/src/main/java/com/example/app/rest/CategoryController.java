@@ -22,6 +22,13 @@ public class CategoryController {
         return categoryRepository.findAll();
     }
 
+    // Get category by id
+    @GetMapping("/{id}")
+    public Category getCategoryById(@PathVariable Long id) {
+        return categoryRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Category not found with ID: " + id));
+    }
+
     // Create a new category
     @PostMapping
     public Category createCategory(@RequestBody CategoryDTO categoryDTO) {
@@ -33,9 +40,10 @@ public class CategoryController {
     // Update an existing category
     @PutMapping("/{id}")
     public Category updateCategory(@PathVariable Long id, @RequestBody CategoryDTO categoryDTO) {
-        Category category = categoryRepository.findById(id).orElseThrow(() ->
-                new RuntimeException("Category not found with ID: " + id));
-        if (categoryDTO.getName() != null) category.setName(categoryDTO.getName());
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Category not found with ID: " + id));
+        if (categoryDTO.getName() != null)
+            category.setName(categoryDTO.getName());
         return categoryRepository.save(category);
     }
 

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/recipes")
 public class RecipeController {
 
@@ -34,8 +35,8 @@ public class RecipeController {
     // Create a new recipe
     @PostMapping
     public Recipe createRecipe(@RequestBody RecipeDTO recipeDTO, @RequestParam Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() ->
-                new RuntimeException("User not found with ID: " + userId));
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
 
         Recipe recipe = new Recipe();
         recipe.setTitle(recipeDTO.getTitle());
@@ -46,7 +47,8 @@ public class RecipeController {
 
         if (recipeDTO.getCategoryId() != null) {
             Category category = categoryRepository.findById(recipeDTO.getCategoryId())
-                    .orElseThrow(() -> new RuntimeException("Category not found with ID: " + recipeDTO.getCategoryId()));
+                    .orElseThrow(
+                            () -> new RuntimeException("Category not found with ID: " + recipeDTO.getCategoryId()));
             recipe.setCategory(category);
         }
 
@@ -56,17 +58,22 @@ public class RecipeController {
     // Update an existing recipe
     @PutMapping("/{id}")
     public Recipe updateRecipe(@PathVariable Long id, @RequestBody RecipeDTO recipeDTO) {
-        Recipe recipe = recipeRepository.findById(id).orElseThrow(() ->
-                new RuntimeException("Recipe not found with ID: " + id));
+        Recipe recipe = recipeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Recipe not found with ID: " + id));
 
-        if (recipeDTO.getTitle() != null) recipe.setTitle(recipeDTO.getTitle());
-        if (recipeDTO.getDescription() != null) recipe.setDescription(recipeDTO.getDescription());
-        if (recipeDTO.getIngredients() != null) recipe.setIngredients(recipeDTO.getIngredients());
-        if (recipeDTO.getInstructions() != null) recipe.setInstructions(recipeDTO.getInstructions());
+        if (recipeDTO.getTitle() != null)
+            recipe.setTitle(recipeDTO.getTitle());
+        if (recipeDTO.getDescription() != null)
+            recipe.setDescription(recipeDTO.getDescription());
+        if (recipeDTO.getIngredients() != null)
+            recipe.setIngredients(recipeDTO.getIngredients());
+        if (recipeDTO.getInstructions() != null)
+            recipe.setInstructions(recipeDTO.getInstructions());
 
         if (recipeDTO.getCategoryId() != null) {
             Category category = categoryRepository.findById(recipeDTO.getCategoryId())
-                    .orElseThrow(() -> new RuntimeException("Category not found with ID: " + recipeDTO.getCategoryId()));
+                    .orElseThrow(
+                            () -> new RuntimeException("Category not found with ID: " + recipeDTO.getCategoryId()));
             recipe.setCategory(category);
         }
 
