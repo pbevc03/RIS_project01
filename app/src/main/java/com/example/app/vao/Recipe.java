@@ -1,8 +1,11 @@
 package com.example.app.vao;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -23,6 +26,10 @@ public class Recipe {
     @JoinColumn(name = "category_id", nullable = true)
     @JsonBackReference
     private Category category;
+
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
+    @JsonManagedReference // Manage the relationship from the Recipe side
+    private List<Comment> comments;
 
     private String title;
 

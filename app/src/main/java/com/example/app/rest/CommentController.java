@@ -10,6 +10,7 @@ import com.example.app.vao.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -39,5 +40,27 @@ public class CommentController {
         comment.setRecipe(recipe);
 
         return commentRepository.save(comment);
+    }
+
+    @GetMapping("/{id}")
+    public Comment getCommentById(@PathVariable Long id) {
+        return commentRepository.findById(id).orElseThrow(() ->
+                new RuntimeException("Comment not found with ID: " + id));
+    }
+
+    // Get all comments by a specific user
+    @GetMapping("/user/{userId}")
+    public List<Comment> getCommentsByUser(@PathVariable Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() ->
+                new RuntimeException("User not found with ID: " + userId));
+        return commentRepository.findByUser(user);
+    }
+
+    // Get all comments for a specific recipe
+    @GetMapping("/recipe/{recipeId}")
+    public List<Comment> getCommentsByRecipe(@PathVariable Long recipeId) {
+        Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(() ->
+                new RuntimeException("Recipe not found with ID: " + recipeId));
+        return commentRepository.findByRecipe(recipe);
     }
 }
