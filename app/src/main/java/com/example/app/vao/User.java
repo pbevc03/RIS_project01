@@ -1,5 +1,6 @@
 package com.example.app.vao;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,6 +26,7 @@ public class User {
     private String password;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Recipe> recipes;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)

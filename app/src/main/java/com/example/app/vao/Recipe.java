@@ -1,5 +1,6 @@
 package com.example.app.vao;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,10 +16,12 @@ public class Recipe {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = true)
+    @JsonBackReference
     private Category category;
 
     private String title;
