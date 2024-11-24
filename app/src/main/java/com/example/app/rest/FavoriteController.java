@@ -1,9 +1,11 @@
 package com.example.app.rest;
 
 import com.example.app.dao.FavoriteRepository;
+import com.example.app.dao.RecipeRepository;
 import com.example.app.dao.UserRepository;
 import com.example.app.dto.FavoriteDTO;
 import com.example.app.vao.Favorite;
+import com.example.app.vao.Recipe;
 import com.example.app.vao.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -37,10 +39,10 @@ public class FavoriteController {
     // Add a recipe to favorites
     @PostMapping
     public Favorite addFavorite(@RequestBody FavoriteDTO favoriteDTO) {
-        User user = userRepository.findById(favoriteDTO.getUserId()).orElseThrow(() ->
-                new RuntimeException("User not found with ID: " + favoriteDTO.getUserId()));
-        Recipe recipe = recipeRepository.findById(favoriteDTO.getRecipeId()).orElseThrow(() ->
-                new RuntimeException("Recipe not found with ID: " + favoriteDTO.getRecipeId()));
+        User user = userRepository.findById(favoriteDTO.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + favoriteDTO.getUserId()));
+        Recipe recipe = recipeRepository.findById(favoriteDTO.getRecipeId())
+                .orElseThrow(() -> new RuntimeException("Recipe not found with ID: " + favoriteDTO.getRecipeId()));
 
         if (favoriteRepository.existsByUserAndRecipe(user, recipe)) {
             throw new RuntimeException("Recipe is already in favorites.");
