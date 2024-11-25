@@ -22,7 +22,7 @@ public class UserController {
     }
 
     // Create a new user
-    @PostMapping
+    @PostMapping("/new_user")
     public User createUser(@RequestBody UserDTO userDTO) {
         User user = new User();
         user.setUsername(userDTO.getUsername());

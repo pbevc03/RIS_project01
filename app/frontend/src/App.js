@@ -17,6 +17,13 @@ function App() {
     });
     const [editingRecipeId, setEditingRecipeId] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
+    const [isLoginRegisterVisible, setIsLoginRegisterVisible] = useState(false);
+    //const [loggedInUser, setLoggedInUser] = useState(null);
+    const [registerForm, setRegisterForm] = useState({
+        username: '',
+        email: '',
+        password: '',
+    });
 
     useEffect(() => {
         fetchRecipes();
@@ -152,6 +159,52 @@ function App() {
         }
     };
 
+    //Log in/register logic
+    const toggleLoginRegister = () => {
+        console.log("stisnjen login button")
+        setIsLoginRegisterVisible((prev) => !prev);
+    };
+
+    const handleRegisterFormChange = (e) => {
+        const { name, value } = e.target;
+        setRegisterForm((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const handleRegisterSubmit = async (e) => {
+        e.preventDefault();
+        console.log('Register form submitted:', registerForm);
+
+        try {
+            const response = await fetch('http://localhost:8080/users/new_user', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(registerForm),
+            });
+
+            // Checking if the request was seccessful
+            if (!response.ok) {
+                const errorMessage = await response.text();
+                throw new Error(`Error: ${response.status} - ${errorMessage}`);
+            }
+
+            const data = await response.json(); // Parse the response JSON
+            console.log('User registered successfully:', data);
+
+            // Empty the form after registering
+             setRegisterForm({ username: '', password: '', email: '' });
+
+            // Hide the form after successful registration
+            setIsLoginRegisterVisible(false);
+        } catch (error) {
+            // Handle any errors that occur during the fetch
+            console.error('Error during registration:', error.message);
+        }
+
+        setIsLoginRegisterVisible(false); // Hide the form after submission
+    };
+
     return (
         <div className="App">
             {/* Header */}
@@ -167,7 +220,7 @@ function App() {
                             </ul>
                         </nav>
                         <div className="auth-buttons">
-                            <button className="btn btn-success">Registracija</button>
+                            <button className="btn btn-success" onClick={toggleLoginRegister}>Registracija/Prijava</button>
                         </div>
                     </div>
                 </div>
@@ -185,6 +238,52 @@ function App() {
                         </div>
                     </div>
             </header>
+
+            {/* Conditional render for login/register form */}
+            {isLoginRegisterVisible && (
+                <div className="container">
+                    <h2>Register</h2>
+                    <form onSubmit={handleRegisterSubmit}>
+                        <div className="mb-3">
+                            <label htmlFor="username" className="form-label">Username</label>
+                            <input
+                                type="text"
+                                id="username"
+                                name="username"
+                                className="form-control"
+                                value={registerForm.username}
+                                onChange={handleRegisterFormChange}
+                                required
+                            />
+                        </div>
+                        <div className="mb-3">
+                            <label htmlFor="email" className="form-label">Email</label>
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                className="form-control"
+                                value={registerForm.email}
+                                onChange={handleRegisterFormChange}
+                                required
+                            />
+                        </div>
+                        <div className="mb-3">
+                            <label htmlFor="password" className="form-label">Password</label>
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                className="form-control"
+                                value={registerForm.password}
+                                onChange={handleRegisterFormChange}
+                                required
+                            />
+                        </div>
+                        <button type="submit" className="btn btn-primary">Registracija/Prijava</button>
+                    </form>
+                </div>
+            )}
 
             {/* Main content */}
             <main className="container">
