@@ -120,7 +120,7 @@ Uporabnik lahko oceni recept in pusti komentar, s čimer prispeva svoje mnenje a
 
 ## Razredni diagram
 
-<img width="620" alt="Picture 1" src="https://github.com/user-attachments/assets/ccc5cb64-e074-4628-841b-866fcac684a7">
+<img width="620" alt="Picture 1" src="https://cdn.discordapp.com/attachments/1297988670560927824/1310276850186190958/RIS.jpg?ex=67454aa8&is=6743f928&hm=025350afa8dfd4ea8d400173f2bd251b1b3920d7dcb932d1c6513db4e7c97056&">
 <br>
 
 ## Ključne metode in njihove naloge
