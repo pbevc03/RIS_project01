@@ -1,6 +1,7 @@
 package com.example.app.vao;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -22,9 +23,9 @@ public class Recipe {
     @JsonBackReference
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id", nullable = true)
-    @JsonBackReference
+    @JsonIgnoreProperties("recipes")
     private Category category;
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)

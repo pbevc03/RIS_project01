@@ -4,6 +4,7 @@ import './App.css';
 
 function App() {
     const [recipes, setRecipes] = useState([]);
+    const [categories, setCategories] = useState([]);
     const [selectedRecipe, setSelectedRecipe] = useState(null);
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState('');
@@ -12,12 +13,14 @@ function App() {
         description: '',
         ingredients: '',
         instructions: '',
+        categoryId: '',
     });
     const [editingRecipeId, setEditingRecipeId] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
         fetchRecipes();
+        fetchCategories();
     }, []);
 
     const handleSearchChange = (e) => {
@@ -30,9 +33,23 @@ function App() {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             const data = await response.json();
+            console.log('Fetched recipes:', data); // Debug log
             setRecipes(data);
         } catch (error) {
             console.error('Error fetching recipes:', error);
+        }
+    };
+
+    const fetchCategories = async () => {
+        try {
+            const response = await fetch('http://localhost:8080/categories');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            setCategories(data);
+        } catch (error) {
+            console.error('Error fetching categories:', error);
         }
     };
 
@@ -73,7 +90,7 @@ function App() {
                 },
                 body: JSON.stringify(newRecipe),
             });
-            setNewRecipe({ title: '', description: '', ingredients: '', instructions: '' });
+            setNewRecipe({ title: '', description: '', ingredients: '', instructions: '', categoryId: ''  });
             setEditingRecipeId(null);
             fetchRecipes();
         } catch (error) {
@@ -88,6 +105,7 @@ function App() {
             description: recipe.description,
             ingredients: recipe.ingredients,
             instructions: recipe.instructions,
+            categoryId: recipe.category ? recipe.category.id : '',
         });
     };
 
@@ -182,7 +200,7 @@ function App() {
                                         className="list-group-item d-flex justify-content-between align-items-center"
                                         onClick={() => handleRecipeClick(recipe)}
                                     >
-                                        {recipe.title}
+                                        {recipe.title} - {recipe.category?.name || 'Uncategorized'}
                                         <div>
                                             <button className="btn btn-primary btn-sm me-2" onClick={() => handleEditClick(recipe)}>Edit</button>
                                             <button className="btn btn-danger btn-sm" onClick={() => handleDeleteRecipe(recipe.id)}>Delete</button>
@@ -198,6 +216,7 @@ function App() {
                                 <p>{selectedRecipe.description}</p>
                                 <p><strong>Ingredients:</strong> {selectedRecipe.ingredients}</p>
                                 <p><strong>Instructions:</strong> {selectedRecipe.instructions}</p>
+                                <p><strong>Category:</strong> {selectedRecipe.category?.name || 'Uncategorized'}</p>
 
                                 <h4>Comments</h4>
                                 <ul className="list-group">
@@ -259,6 +278,19 @@ function App() {
                         value={newRecipe.instructions}
                         onChange={handleNewRecipeChange}
                     ></textarea>
+                    <select
+                        name="categoryId"
+                        className="form-control mb-2"
+                        value={newRecipe.categoryId}
+                        onChange={handleNewRecipeChange}
+                    >
+                        <option value="">Select a category</option>
+                        {categories.map((category) => (
+                            <option key={category.id} value={category.id}>
+                                {category.name}
+                            </option>
+                        ))}
+                    </select>
                     <button className="btn btn-success" onClick={handleCreateOrEditRecipe}>
                         {editingRecipeId ? 'Save Changes' : 'Add Recipe'}
                     </button>
