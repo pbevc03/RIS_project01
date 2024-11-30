@@ -175,6 +175,6 @@ zagotavljajo fleksibilnost pri spremembah teh podatkov.<br>
 •	**uporabiFiltre(String filter)**: Uporablja dodatne filtre (npr. kategorija, ocena) za zožitev rezultatov iskanja.<br>
 
 # Testiranje
-Dodana mapa z testiranjem na: [`/app/src/test`](src/test/java/com/example/app/dao)
-ReadMe file s porocilom: [Go to unit_tests.](unit_tests/tests.md)
+Dodana mapa z testiranjem na: [`/app/src/test`](app/src/test/java/com/example/app/dao)
+ReadMe file s porocilom: [Go to unit_tests.](unit_tests/porocilo_testov.md)
 
