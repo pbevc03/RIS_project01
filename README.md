@@ -174,5 +174,7 @@ zagotavljajo fleksibilnost pri spremembah teh podatkov.<br>
 •	**iščiRecept(String input)**: Išče recepte na podlagi ključnih besed, ki jih vnese uporabnik.<br>
 •	**uporabiFiltre(String filter)**: Uporablja dodatne filtre (npr. kategorija, ocena) za zožitev rezultatov iskanja.<br>
 
-
+# Testiranje
+Dodana mapa z testiranjem na: [`/app/src/test`](src/test/java/com/example/app/dao)
+ReadMe file s porocilom: [Go to unit_tests.](unit_tests/tests.md)
 

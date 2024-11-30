@@ -8,6 +8,7 @@ import com.example.app.vao.Recipe;
 import com.example.app.vao.Category;
 import com.example.app.vao.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -50,6 +51,10 @@ public class RecipeController {
                     .orElseThrow(
                             () -> new RuntimeException("Category not found with ID: " + recipeDTO.getCategoryId()));
             recipe.setCategory(category);
+        }
+
+        if(recipeDTO.getTitle() == null){
+            throw new IllegalArgumentException("Title cannot be null");
         }
 
         return recipeRepository.save(recipe);

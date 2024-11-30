@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.util.List;
@@ -36,6 +37,7 @@ public class Recipe {
     @JsonManagedReference // Allow serialization of favorites from the Recipe side
     private List<Favorite> favorites;
 
+    @NotNull(message = "Title is required")
     private String title;
 
     @Column(length = 1000)
