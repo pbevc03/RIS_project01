@@ -135,6 +135,11 @@ function App() {
     };
 
     const handleAddComment = async () => {
+        const userId = localStorage.getItem('userId');
+        if (!userId) {
+            console.error('User ID not found in localStorage. Please log in again.');
+            return;
+        }
         if (!selectedRecipe) return;
         try {
             await fetch('http://localhost:8080/comments', {
@@ -144,7 +149,7 @@ function App() {
                 },
                 body: JSON.stringify({
                     content: newComment,
-                    userId: 1, // tukaj daj user id trenutnega uporabnika **********++++++++++++++++++++++++++++++++++++
+                    userId, // tukaj daj user id trenutnega uporabnika **********++++++++++++++++++++++++++++++++++++
                     recipeId: selectedRecipe.id,
                 }),
             });
