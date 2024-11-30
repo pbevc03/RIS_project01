@@ -4,8 +4,12 @@ import com.example.app.dao.UserRepository;
 import com.example.app.dto.UserDTO;
 import com.example.app.vao.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -30,6 +34,20 @@ public class UserController {
         user.setPassword(userDTO.getPassword());
         return userRepository.save(user);
     }
+
+    //Get exsisting user
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody UserDTO userDTO) {
+        Optional<User> user = userRepository.findByUsername(userDTO.getUsername());
+        if (user.isPresent() && user.get().getPassword().equals(userDTO.getPassword())) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("user", user.get().getUsername());
+            response.put("userId", user.get().getId());
+            return ResponseEntity.ok(response);
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+    }
+
 
     // Update an existing user
     @PutMapping("/{id}")

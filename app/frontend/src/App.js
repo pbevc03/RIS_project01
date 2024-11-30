@@ -18,12 +18,17 @@ function App() {
     const [editingRecipeId, setEditingRecipeId] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
     const [isLoginRegisterVisible, setIsLoginRegisterVisible] = useState(false);
-    //const [loggedInUser, setLoggedInUser] = useState(null);
+    const [isLoginVisible, setIsLoginVisible] = useState(false);
     const [registerForm, setRegisterForm] = useState({
         username: '',
         email: '',
         password: '',
     });
+    const [loginForm, setLoginForm] = useState({
+        username: '',
+        password: '',
+    })
+    const [loggedInUser, setLoggedInUser] = useState(null);
 
     useEffect(() => {
         fetchRecipes();
@@ -161,7 +166,7 @@ function App() {
 
     //Log in/register logic
     const toggleLoginRegister = () => {
-        console.log("stisnjen login button")
+        console.log("stisnjen register button")
         setIsLoginRegisterVisible((prev) => !prev);
     };
 
@@ -205,6 +210,66 @@ function App() {
         setIsLoginRegisterVisible(false); // Hide the form after submission
     };
 
+    //Login
+    const toggleLogin = () => {
+        console.log("stisnjen login button")
+        setIsLoginVisible((prev) => !prev);
+    };
+
+    const handleLoginFormChange = (e) => {
+        const { name, value } = e.target;
+        setLoginForm((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const handleLoginSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            const response = await fetch('http://localhost:8080/users/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(loginForm),
+            });
+
+            if (!response.ok) {
+                const errorMessage = await response.text();
+                throw new Error(errorMessage);
+            }
+
+            const userData = await response.json();
+
+            const {user, userId} = userData;
+            console.log('username',user,'user', userId);
+
+
+            setLoggedInUser(user);
+            localStorage.setItem('username', user);
+            localStorage.setItem('userId', userId);
+            setLoginForm({ username: '', password: ''});
+            setIsLoginVisible(false);
+
+            console.log(userData);
+
+        } catch (error) {
+            console.error('Error during login:', error.message);
+            alert('Invalid username or password.');
+        }
+    };
+
+    useEffect(() => {
+        const storedUser = localStorage.getItem('loggedInUser');
+        if (storedUser) setLoggedInUser(storedUser);
+    }, []);
+
+    const handleLogout = () => {
+        setLoggedInUser(null);
+        localStorage.removeItem('username');
+        localStorage.removeItem('userId');
+        alert('Logged out successfully.');
+    };
+
     return (
         <div className="App">
             {/* Header */}
@@ -216,33 +281,47 @@ function App() {
                             <ul className="nav">
                                 <li className="nav-item"><a className="nav-link text-white" href="/">Domov</a></li>
                                 <li className="nav-item"><a className="nav-link text-white" href="/Onas">O nas</a></li>
-                                <li className="nav-item"><a className="nav-link text-white" href="/kontakt">Kontakt</a></li>
+                                <li className="nav-item"><a className="nav-link text-white" href="/kontakt">Kontakt</a>
+                                </li>
                             </ul>
                         </nav>
                         <div className="auth-buttons">
-                            <button className="btn btn-success" onClick={toggleLoginRegister}>Registracija/Prijava</button>
+                            {loggedInUser ? (
+                                // Show the logged-in user's name and logout button
+                                <div>
+                                    <span className="text-white me-3">Welcome, {loggedInUser}</span>
+                                    <button className="btn btn-danger" onClick={handleLogout}>Logout</button>
+                                </div>
+                            ) : (
+                                // Show login/register buttons wrapped in React Fragment
+                                <>
+                                    <button className="btn btn-success" onClick={toggleLoginRegister}>Registracija</button>
+                                    <button className="btn btn-success" onClick={toggleLogin}>Prijava</button>
+                                </>
+                            )}
                         </div>
                     </div>
                 </div>
+
                 {/* Search bar */}
                 <div className="search-bar mt-3">
-                        <div className="input-group">
-                            <input
-                                type="text"
-                                className="form-control custom-search"
-                                placeholder="Išči recepte..."
-                                value={searchQuery}
-                                onChange={handleSearchChange}
+                    <div className="input-group">
+                        <input
+                            type="text"
+                            className="form-control custom-search"
+                            placeholder="Išči recepte..."
+                            value={searchQuery}
+                            onChange={handleSearchChange}
                             />
                             <button className="btn btn-secondary" onClick={() => setSearchQuery('')}>Počisti</button>
                         </div>
                     </div>
             </header>
 
-            {/* Conditional render for login/register form */}
+            {/* Conditional render for register form */}
             {isLoginRegisterVisible && (
                 <div className="container">
-                    <h2>Register</h2>
+                    <h2>Registracija</h2>
                     <form onSubmit={handleRegisterSubmit}>
                         <div className="mb-3">
                             <label htmlFor="username" className="form-label">Username</label>
@@ -280,10 +359,42 @@ function App() {
                                 required
                             />
                         </div>
-                        <button type="submit" className="btn btn-primary">Registracija/Prijava</button>
+                        <button type="submit" className="btn btn-primary">Registracija</button>
                     </form>
                 </div>
             )}
+
+            {/* Conditional render for login form */}
+            {isLoginVisible && (<div className="container">
+                <h2>Prijava</h2>
+                <form onSubmit={handleLoginSubmit}>
+                    <div className="mb-3">
+                        <label htmlFor="username" className="form-label">Username</label>
+                        <input
+                            type="text"
+                            id="username"
+                            name="username"
+                            className="form-control"
+                            value={loginForm.username}
+                            onChange={handleLoginFormChange}
+                            required
+                        />
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="password" className="form-label">Password</label>
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            className="form-control"
+                            value={loginForm.password}
+                            onChange={handleLoginFormChange}
+                            required
+                        />
+                    </div>
+                    <button type="submit" className="btn btn-primary">Prijava</button>
+                </form>
+            </div>)}
 
             {/* Main content */}
             <main className="container">
@@ -301,8 +412,12 @@ function App() {
                                     >
                                         {recipe.title} - {recipe.category?.name || 'Uncategorized'}
                                         <div>
-                                            <button className="btn btn-primary btn-sm me-2" onClick={() => handleEditClick(recipe)}>Edit</button>
-                                            <button className="btn btn-danger btn-sm" onClick={() => handleDeleteRecipe(recipe.id)}>Delete</button>
+                                            <button className="btn btn-primary btn-sm me-2"
+                                                    onClick={() => handleEditClick(recipe)}>Edit
+                                            </button>
+                                            <button className="btn btn-danger btn-sm"
+                                                    onClick={() => handleDeleteRecipe(recipe.id)}>Delete
+                                            </button>
                                         </div>
                                     </li>
                                 ))}
