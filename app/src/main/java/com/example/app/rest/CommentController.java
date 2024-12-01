@@ -59,9 +59,11 @@ public class CommentController {
     // Get all comments for a specific recipe
     @GetMapping("/recipe/{recipeId}")
     public List<Comment> getCommentsByRecipe(@PathVariable Long recipeId) {
-        Recipe recipe = recipeRepository.findById(recipeId)
-                .orElseThrow(() -> new RuntimeException("Recipe not found with ID: " + recipeId));
-        return commentRepository.findByRecipe(recipe);
+        Optional<Recipe> recipeOptional = recipeRepository.findById(recipeId);
+        if (recipeOptional.isEmpty()) {
+            return List.of(); // Vrne prazen seznam, če recept ne obstaja
+        }
+        return commentRepository.findByRecipe(recipeOptional.get());
     }
 
     // Delete a comment by ID
