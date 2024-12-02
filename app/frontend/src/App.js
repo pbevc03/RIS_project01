@@ -89,9 +89,15 @@ function App() {
     };
 
     const handleCreateOrEditRecipe = async () => {
+
+        const userId = localStorage.getItem('userId');
+        if (!userId) {
+            alert('User is not logged in. Please log in to create or edit recipes.');
+            return;
+        }
         const url = editingRecipeId
             ? `http://localhost:8080/recipes/${editingRecipeId}`
-            : 'http://localhost:8080/recipes?userId=1'; // tukaj daj user id trenutnega uporabnika **********++++++++++++++++++++++++++++
+            : `http://localhost:8080/recipes?userId=${userId}`; // tukaj daj user id trenutnega uporabnika **********++++++++++++++++++++++++++++
         const method = editingRecipeId ? 'PUT' : 'POST';
 
         try {
@@ -149,7 +155,7 @@ function App() {
                 },
                 body: JSON.stringify({
                     content: newComment,
-                    userId, // tukaj daj user id trenutnega uporabnika **********++++++++++++++++++++++++++++++++++++
+                    userId,
                     recipeId: selectedRecipe.id,
                 }),
             });
@@ -212,7 +218,7 @@ function App() {
             console.error('Error during registration:', error.message);
         }
 
-        setIsLoginRegisterVisible(false); // Hide the form after submission
+        setIsLoginRegisterVisible(false);
     };
 
     //Login
