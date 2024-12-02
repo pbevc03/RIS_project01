@@ -36,8 +36,25 @@ Nato je pa test bil uspešno opravljen.
 
 - <b>Naredil: Vid Bezget</b>
 
-### Test
-...
+### 1. Test: `Ustvari uporabnika`
+**Namen:** Ta test preverja, ali je mogoče uspešno ustvariti novega uporabnika z veljavnimi podatki (ime, e-pošta, geslo).
+**Pomembnost:** Potrjuje, da aplikacija omogoča dodajanje uporabnikov in da se ustvarjeni uporabnik pravilno shrani v bazo ter dodeli unikatni ID.
+
+### 2. Test: `Posodobi uporabnika`
+**Namen:** Ta test preverja, ali je mogoče uspešno posodobiti podatke obstoječega uporabnika. Preverja, da se posodobijo le navedeni podatki (npr. ime), medtem ko ostali ostanejo nespremenjeni.
+**Pomembnost:** Zagotavlja, da aplikacija omogoča delno posodabljanje podatkov uporabnika brez spreminjanja neciljanih atributov.
+
+### 3. Test: `Izbriši uporabnika`
+**Namen:** Preverja, ali aplikacija omogoča uspešno brisanje uporabnika. Test preveri, ali uporabnik obstaja v bazi pred brisanjem in ali po brisanju ne obstaja več.
+**Pomembnost:** Potrjuje funkcionalnost brisanja uporabnikov in zagotavlja, da se podatki iz baze pravilno odstranijo.
+
+### 4. Test: `Pridobi vse uporabnike`
+**Namen:** Ta test preverja, ali metoda za pridobivanje vseh uporabnikov pravilno vrne seznam uporabnikov, ki so trenutno v bazi. Dodana sta dva uporabnika, nato pa se preveri, ali se metoda odzove s pravilnim številom rezultatov.
+**Pomembnost:** Zagotavlja, da funkcionalnost za pregled vseh uporabnikov deluje pravilno in vrača ustrezne podatke.
+
+### 5. Test: `Ponovljen test števila uporabnikov`
+**Namn:** Ta test ponavlja preverjanje števila uporabnikov v bazi, da zagotovi, da je baza v pričakovanem stanju tudi po večkratnih testnih klicih.
+**Pomembnost:** Potrjuje konsistentnost aplikacije in zagotavlja, da število uporabnikov ostane pravilno po vsakem testu.
 
 ## Unit testi za za Komentarje
 
