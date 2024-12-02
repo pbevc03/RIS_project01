@@ -22,6 +22,10 @@ public class UserControllerTest {
         userRepository.deleteAll();
     }
 
+    /**
+     * This test verifies that a user can be successfully created and saved in the repository.
+     * It ensures that the created user has the expected attributes and that its ID is not null.
+     */
     @Test
     void testCreateUser() {
         UserDTO userDTO = new UserDTO();
@@ -37,6 +41,10 @@ public class UserControllerTest {
         assertEquals("secure_password", createdUser.getPassword());
     }
 
+    /**
+     * This test checks that updating an existing user's information works correctly.
+     * It verifies that the username is updated while other attributes remain unchanged.
+     */
     @Test
     void testUpdateUser() {
         User user = User.builder()
@@ -55,6 +63,10 @@ public class UserControllerTest {
         assertEquals("original@example.com", updatedUser.getEmail());
     }
 
+    /**
+     * This test ensures that a user can be successfully deleted from the repository.
+     * It checks that the user exists before deletion and no longer exists afterward.
+     */
     @Test
     void testDeleteUser() {
         User user = User.builder()
@@ -71,6 +83,10 @@ public class UserControllerTest {
         Assertions.assertFalse(userRepository.existsById(user.getId()));
     }
 
+    /**
+     * This test verifies that all users in the repository can be retrieved correctly.
+     * It checks that the returned list of users matches the expected number of saved users.
+     */
     @Test
     void testGetAllUsers() {
         userRepository.save(User.builder()
@@ -90,6 +106,10 @@ public class UserControllerTest {
         assertEquals(2, userRepository.count());
     }
 
+    /**
+     * This test checks the user count consistency across multiple runs.
+     * It ensures that the user count remains accurate during repeated executions.
+     */
     @RepeatedTest(3)
     @DisplayName("Repeated Test for User Count")
     void testUserCountRepeatedly() {
