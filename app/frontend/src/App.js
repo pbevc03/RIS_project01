@@ -29,6 +29,8 @@ function App() {
         password: '',
     })
     const [loggedInUser, setLoggedInUser] = useState(null);
+    const [portions, setPortions] = useState(1);
+    const [adjustedIngredients, setAdjustedIngredients] = useState([]);
 
     useEffect(() => {
         fetchRecipes();
@@ -78,9 +80,19 @@ function App() {
         }
     };
 
+
     const handleRecipeClick = (recipe) => {
         setSelectedRecipe(recipe);
         fetchComments(recipe.id);
+
+        if (recipe.ingredients) {
+            const adjusted = recipe.ingredients.map((ingredient) => ({
+                title: ingredient.title,
+                amount: ingredient.amount,
+                unit: ingredient.unit,
+            }));
+            setAdjustedIngredients(adjusted);
+        }
     };
 
     const handleNewRecipeChange = (e) => {
@@ -281,6 +293,22 @@ function App() {
         alert('Logged out successfully.');
     };
 
+    const handlePortionsChange = (newPortions) => {
+        const parsedPortions = parseInt(newPortions, 10);
+        setPortions(parsedPortions);
+    
+        if (selectedRecipe && selectedRecipe.ingredients) {
+
+            const adjusted = selectedRecipe.ingredients.map((ingredient) => ({
+                title: ingredient.title,
+                amount: ingredient.amount * parsedPortions,
+                unit: ingredient.unit,
+            }));
+    
+            setAdjustedIngredients(adjusted);
+        }
+    };
+
     return (
         <div className="App">
             {/* Header */}
@@ -434,14 +462,47 @@ function App() {
                                 ))}
                         </ul>
                     </div>
+                                                          
                     <div className="col-md-6">
                         {selectedRecipe && (
                             <div>
                                 <h3>{selectedRecipe.title}</h3>
                                 <p>{selectedRecipe.description}</p>
-                                <p><strong>Ingredients:</strong> {selectedRecipe.ingredients}</p>
-                                <p><strong>Instructions:</strong> {selectedRecipe.instructions}</p>
                                 <p><strong>Category:</strong> {selectedRecipe.category?.name || 'Uncategorized'}</p>
+
+                                {/* Input for portions */}
+                                <div className="mb-3">
+                                    <label htmlFor="portions" className="form-label">Število porcij:</label>
+                                    <input
+                                        type="number"
+                                        id="portions"
+                                        className="form-control"
+                                        value={portions}
+                                        min="1"
+                                        onChange={(e) => handlePortionsChange(e.target.value)}
+                                    />
+                                </div>
+
+                                {/* Ingredients Table */}
+                                <h4>Sestavine</h4>
+                                <table className="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Ime sestavine</th>
+                                            <th>Količina</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {adjustedIngredients.map((ingredient, index) => (
+                                            <tr key={index}>
+                                                <td>{ingredient.name}</td>
+                                                <td>{ingredient.amount.toFixed(2)} {ingredient.unit}</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                                        
+                                <p><strong>Instructions:</strong> {selectedRecipe.instructions}</p>
 
                                 <h4>Comments</h4>
                                 <ul className="list-group">
