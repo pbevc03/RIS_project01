@@ -4,8 +4,9 @@
 
 
 # In progress
-* Implementacija back-end za dolocitev porcije (2 uri)
+
 
 
 # Done
 * Implemntacija front-end funkcionalnosti (3 ure)
+* Implementacija back-end za dolocitev porcije (2 uri)
