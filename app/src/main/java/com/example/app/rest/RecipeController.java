@@ -1,36 +1,56 @@
 package com.example.app.rest;
 
 import com.example.app.dao.RecipeRepository;
+import com.example.app.dao.IngredientRepository;
 import com.example.app.dao.CategoryRepository;
 import com.example.app.dao.UserRepository;
 import com.example.app.dto.RecipeDTO;
-import com.example.app.vao.Recipe;
-import com.example.app.vao.Category;
-import com.example.app.vao.User;
+import com.example.app.dto.RecipeIngredientDTO;
+import com.example.app.vao.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/recipes")
+@CrossOrigin(origins = "http://localhost:3000")
 public class RecipeController {
 
     @Autowired
     private RecipeRepository recipeRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private IngredientRepository ingredientRepository;
 
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     // Get all recipes
     @GetMapping
-    public Iterable<Recipe> getAllRecipes() {
-        return recipeRepository.findAll();
+    public List<RecipeDTO> getAllRecipes() {
+        return recipeRepository.findAll().stream()
+                .map(recipe -> {
+                    RecipeDTO dto = new RecipeDTO();
+                    dto.setTitle(recipe.getTitle());
+                    dto.setDescription(recipe.getDescription());
+                    dto.setInstructions(recipe.getInstructions());
+                    dto.setCategoryId(recipe.getCategory() != null ? recipe.getCategory().getId() : null);
+                    dto.setRecipeIngredients(recipe.getRecipeIngredients().stream()
+                            .map(recipeIngredient -> {
+                                RecipeIngredientDTO ingredientDTO = new RecipeIngredientDTO();
+                                ingredientDTO.setIngredientName(recipeIngredient.getIngredient().getName());
+                                ingredientDTO.setQuantity(recipeIngredient.getQuantity());
+                                ingredientDTO.setUnit(recipeIngredient.getUnit());
+                                return ingredientDTO;
+                            }).collect(Collectors.toList()));
+                    return dto;
+                }).collect(Collectors.toList());
     }
 
     // Create a new recipe
@@ -42,20 +62,33 @@ public class RecipeController {
         Recipe recipe = new Recipe();
         recipe.setTitle(recipeDTO.getTitle());
         recipe.setDescription(recipeDTO.getDescription());
-        recipe.setIngredients(recipeDTO.getIngredients());
         recipe.setInstructions(recipeDTO.getInstructions());
         recipe.setUser(user);
 
         if (recipeDTO.getCategoryId() != null) {
             Category category = categoryRepository.findById(recipeDTO.getCategoryId())
-                    .orElseThrow(
-                            () -> new RuntimeException("Category not found with ID: " + recipeDTO.getCategoryId()));
+                    .orElseThrow(() -> new RuntimeException("Category not found with ID: " + recipeDTO.getCategoryId()));
             recipe.setCategory(category);
         }
 
-        if(recipeDTO.getTitle() == null){
-            throw new IllegalArgumentException("Title cannot be null");
-        }
+        // Map and save RecipeIngredients
+        List<RecipeIngredient> recipeIngredients = recipeDTO.getRecipeIngredients().stream().map(dto -> {
+            Ingredient ingredient = ingredientRepository.findByName(dto.getIngredientName())
+                    .orElseGet(() -> {
+                        Ingredient newIngredient = new Ingredient();
+                        newIngredient.setName(dto.getIngredientName());
+                        return ingredientRepository.save(newIngredient);
+                    });
+
+            RecipeIngredient recipeIngredient = new RecipeIngredient();
+            recipeIngredient.setIngredient(ingredient);
+            recipeIngredient.setQuantity(dto.getQuantity());
+            recipeIngredient.setUnit(dto.getUnit());
+            recipeIngredient.setRecipe(recipe);
+            return recipeIngredient;
+        }).collect(Collectors.toList());
+
+        recipe.setRecipeIngredients(recipeIngredients);
 
         return recipeRepository.save(recipe);
     }
@@ -70,16 +103,35 @@ public class RecipeController {
             recipe.setTitle(recipeDTO.getTitle());
         if (recipeDTO.getDescription() != null)
             recipe.setDescription(recipeDTO.getDescription());
-        if (recipeDTO.getIngredients() != null)
-            recipe.setIngredients(recipeDTO.getIngredients());
         if (recipeDTO.getInstructions() != null)
             recipe.setInstructions(recipeDTO.getInstructions());
-
         if (recipeDTO.getCategoryId() != null) {
             Category category = categoryRepository.findById(recipeDTO.getCategoryId())
-                    .orElseThrow(
-                            () -> new RuntimeException("Category not found with ID: " + recipeDTO.getCategoryId()));
+                    .orElseThrow(() -> new RuntimeException("Category not found with ID: " + recipeDTO.getCategoryId()));
             recipe.setCategory(category);
+        }
+
+        // Update RecipeIngredients
+        if (recipeDTO.getRecipeIngredients() != null) {
+            recipe.getRecipeIngredients().clear();
+
+            List<RecipeIngredient> updatedIngredients = recipeDTO.getRecipeIngredients().stream().map(dto -> {
+                Ingredient ingredient = ingredientRepository.findByName(dto.getIngredientName())
+                        .orElseGet(() -> {
+                            Ingredient newIngredient = new Ingredient();
+                            newIngredient.setName(dto.getIngredientName());
+                            return ingredientRepository.save(newIngredient);
+                        });
+
+                RecipeIngredient recipeIngredient = new RecipeIngredient();
+                recipeIngredient.setIngredient(ingredient);
+                recipeIngredient.setQuantity(dto.getQuantity());
+                recipeIngredient.setUnit(dto.getUnit());
+                recipeIngredient.setRecipe(recipe);
+                return recipeIngredient;
+            }).collect(Collectors.toList());
+
+            recipe.setRecipeIngredients(updatedIngredients);
         }
 
         return recipeRepository.save(recipe);
