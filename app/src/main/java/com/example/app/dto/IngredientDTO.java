@@ -6,4 +6,6 @@ import lombok.Data;
 public class IngredientDTO {
     private Long id;       // Optional: For updates or unique identification
     private String name;   // Name of the ingredient
+    private Double quantity;
+    private String unit;
 }

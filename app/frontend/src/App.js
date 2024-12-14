@@ -30,6 +30,7 @@ function App() {
     })
     const [loggedInUser, setLoggedInUser] = useState(null);
     const [portions, setPortions] = useState(1);
+    const [ingredients, setIngredients] = useState([]);
     const [adjustedIngredients, setAdjustedIngredients] = useState([]);
 
     useEffect(() => {
@@ -80,15 +81,33 @@ function App() {
         }
     };
 
+    const fetchIngredients = async (recipeId) => {
+        try{
+            const response = await fetch(`http://localhost:8080/ingredients/recipe/${recipeId}`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            setIngredients(data);
+            return data;
 
-    const handleRecipeClick = (recipe) => {
+        } catch (error) {
+            console.error('Error fetching ingredients:', error);
+            return [];
+        }
+    };
+
+    const handleRecipeClick = async (recipe) => {
         setSelectedRecipe(recipe);
         fetchComments(recipe.id);
+        //fetchIngredients(recipe.id);
+        const ingredientsData = await fetchIngredients(recipe.id)
 
-        if (recipe.ingredients) {
-            const adjusted = recipe.ingredients.map((ingredient) => ({
-                title: ingredient.title,
-                amount: ingredient.amount,
+
+        if (ingredientsData) {
+            const adjusted = ingredientsData.map((ingredient) => ({
+                name: ingredient.name,
+                quantity: ingredient.quantity * portions,
                 unit: ingredient.unit,
             }));
             setAdjustedIngredients(adjusted);
@@ -296,17 +315,26 @@ function App() {
     const handlePortionsChange = (newPortions) => {
         const parsedPortions = parseInt(newPortions, 10);
         setPortions(parsedPortions);
-    
-        if (selectedRecipe && selectedRecipe.ingredients) {
 
-            const adjusted = selectedRecipe.ingredients.map((ingredient) => ({
-                title: ingredient.title,
-                amount: ingredient.amount * parsedPortions,
+        console.log("selected rec", selectedRecipe)
+        console.log('ingredients', selectedRecipe.recipeIngredients)
+
+        if (selectedRecipe && selectedRecipe.recipeIngredients) {
+
+            console.log('hello')
+
+            const adjusted = selectedRecipe.recipeIngredients.map((ingredient) => ({
+                name: ingredient.ingredientName,
+                quantity: ingredient.quantity * parsedPortions,
                 unit: ingredient.unit,
             }));
-    
+
             setAdjustedIngredients(adjusted);
         }
+
+        console.log('Portions:', parsedPortions);
+        console.log('Original Ingredients:', adjustedIngredients);
+
     };
 
     return (
@@ -487,27 +515,30 @@ function App() {
                                 <h4>Sestavine</h4>
                                 <table className="table">
                                     <thead>
-                                        <tr>
-                                            <th>Ime sestavine</th>
-                                            <th>Količina</th>
-                                        </tr>
+                                    <tr>
+                                        <th>Ime sestavine</th>
+                                        <th>Količina</th>
+                                        <th>Enota</th>
+                                    </tr>
                                     </thead>
                                     <tbody>
-                                        {adjustedIngredients.map((ingredient, index) => (
-                                            <tr key={index}>
-                                                <td>{ingredient.name}</td>
-                                                <td>{ingredient.amount.toFixed(2)} {ingredient.unit}</td>
-                                            </tr>
-                                        ))}
+                                    {(adjustedIngredients.length > 0 ? adjustedIngredients : []).map((ingredient, index) => (
+                                        <tr key={index}>
+                                            <td>{ingredient.name}</td>
+                                            <td>{ingredient.quantity.toFixed(2)}</td>
+                                            <td>{ingredient.unit}</td>
+                                        </tr>
+                                    ))}
                                     </tbody>
                                 </table>
-                                        
+
                                 <p><strong>Instructions:</strong> {selectedRecipe.instructions}</p>
 
                                 <h4>Comments</h4>
                                 <ul className="list-group">
                                     {comments.map((comment) => (
-                                        <li key={comment.id} className="list-group-item d-flex justify-content-between align-items-center">
+                                        <li key={comment.id}
+                                            className="list-group-item d-flex justify-content-between align-items-center">
                                             {comment.content}
                                             <button
                                                 className="btn btn-danger btn-sm"

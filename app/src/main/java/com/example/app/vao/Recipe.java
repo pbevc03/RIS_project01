@@ -1,5 +1,6 @@
 package com.example.app.vao;
 
+import com.example.app.rest.RecipeIngredientController;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -50,4 +51,7 @@ public class Recipe {
 
     @Column(length = 2000)
     private String instructions;
+
+    @JsonIgnore
+    public List<RecipeIngredient> getIngredients() { return recipeIngredients; }
 }

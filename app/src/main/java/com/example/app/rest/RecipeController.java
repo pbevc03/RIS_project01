@@ -37,6 +37,7 @@ public class RecipeController {
         return recipeRepository.findAll().stream()
                 .map(recipe -> {
                     RecipeDTO dto = new RecipeDTO();
+                    dto.setId(recipe.getId());
                     dto.setTitle(recipe.getTitle());
                     dto.setDescription(recipe.getDescription());
                     dto.setInstructions(recipe.getInstructions());
@@ -44,6 +45,7 @@ public class RecipeController {
                     dto.setRecipeIngredients(recipe.getRecipeIngredients().stream()
                             .map(recipeIngredient -> {
                                 RecipeIngredientDTO ingredientDTO = new RecipeIngredientDTO();
+                                ingredientDTO.setIngredientId(recipeIngredient.getIngredient().getId());
                                 ingredientDTO.setIngredientName(recipeIngredient.getIngredient().getName());
                                 ingredientDTO.setQuantity(recipeIngredient.getQuantity());
                                 ingredientDTO.setUnit(recipeIngredient.getUnit());
