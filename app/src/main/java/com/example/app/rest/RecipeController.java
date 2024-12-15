@@ -1,15 +1,13 @@
 package com.example.app.rest;
 
-import com.example.app.dao.RecipeRepository;
-import com.example.app.dao.IngredientRepository;
-import com.example.app.dao.CategoryRepository;
-import com.example.app.dao.UserRepository;
+import com.example.app.dao.*;
 import com.example.app.dto.RecipeDTO;
 import com.example.app.dto.RecipeIngredientDTO;
 import com.example.app.vao.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,6 +28,9 @@ public class RecipeController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private RecipeHistoryRepository recipeHistoryRepository;
 
     // Get all recipes
     @GetMapping
@@ -53,6 +54,45 @@ public class RecipeController {
                             }).collect(Collectors.toList()));
                     return dto;
                 }).collect(Collectors.toList());
+    }
+
+    //GET THE HISTORY OF THE USER
+    @GetMapping("/history/{userId}")
+    public List<RecipeDTO> getUserRecipeHistory(@PathVariable Long userId) {
+        List<RecipeHistory> historyList = recipeHistoryRepository.findByUserId(userId);
+
+        List<RecipeDTO> recipeDTOList = new ArrayList<>();
+
+        for (RecipeHistory history : historyList) {
+            Recipe recipe = history.getRecipe();
+            RecipeDTO dto = new RecipeDTO();
+
+            dto.setTitle(recipe.getTitle());
+            dto.setDescription(recipe.getDescription());
+            dto.setInstructions(recipe.getInstructions());
+
+            if (recipe.getCategory() != null) {
+                dto.setCategoryId(recipe.getCategory().getId());
+            }
+            recipeDTOList.add(dto);
+        }
+        return recipeDTOList;
+    }
+
+
+    // NEW VIEW IS ADDED AND SAVED TO THE DATABASE
+    @PostMapping("/view/{recipeId}")
+    public void logRecipeView(@PathVariable Long recipeId, @RequestParam Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
+        Recipe recipe = recipeRepository.findById(recipeId)
+                .orElseThrow(() -> new RuntimeException("Recipe not found with ID: " + recipeId));
+
+        RecipeHistory history = new RecipeHistory();
+        history.setUser(user);
+        history.setRecipe(recipe);
+
+        recipeHistoryRepository.save(history);
     }
 
     // Create a new recipe
