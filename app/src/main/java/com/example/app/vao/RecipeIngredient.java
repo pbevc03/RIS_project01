@@ -22,4 +22,8 @@ public class RecipeIngredient {
 
     private Double quantity;
     private String unit;
+
+    public String getName() {
+        return ingredient.getName();
+    }
 }

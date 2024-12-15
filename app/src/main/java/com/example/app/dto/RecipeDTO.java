@@ -7,6 +7,8 @@ import java.util.List;
 
 @Data
 public class RecipeDTO {
+    private Long id;
+
     @Schema(description = "Title of the recipe", example = "Spaghetti Carbonara")
     private String title;
 
