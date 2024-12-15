@@ -56,7 +56,7 @@ public class RecipeController {
                 }).collect(Collectors.toList());
     }
 
-    //GET THE HISTORY OF THE USER
+    // GET THE HISTORY OF THE USER
     @GetMapping("/history/{userId}")
     public List<RecipeDTO> getUserRecipeHistory(@PathVariable Long userId) {
         List<RecipeHistory> historyList = recipeHistoryRepository.findByUserId(userId);
@@ -78,7 +78,6 @@ public class RecipeController {
         }
         return recipeDTOList;
     }
-
 
     // NEW VIEW IS ADDED AND SAVED TO THE DATABASE
     @PostMapping("/view/{recipeId}")
@@ -109,7 +108,8 @@ public class RecipeController {
 
         if (recipeDTO.getCategoryId() != null) {
             Category category = categoryRepository.findById(recipeDTO.getCategoryId())
-                    .orElseThrow(() -> new RuntimeException("Category not found with ID: " + recipeDTO.getCategoryId()));
+                    .orElseThrow(
+                            () -> new RuntimeException("Category not found with ID: " + recipeDTO.getCategoryId()));
             recipe.setCategory(category);
         }
 
@@ -149,7 +149,8 @@ public class RecipeController {
             recipe.setInstructions(recipeDTO.getInstructions());
         if (recipeDTO.getCategoryId() != null) {
             Category category = categoryRepository.findById(recipeDTO.getCategoryId())
-                    .orElseThrow(() -> new RuntimeException("Category not found with ID: " + recipeDTO.getCategoryId()));
+                    .orElseThrow(
+                            () -> new RuntimeException("Category not found with ID: " + recipeDTO.getCategoryId()));
             recipe.setCategory(category);
         }
 
@@ -186,5 +187,12 @@ public class RecipeController {
             throw new RuntimeException("Recipe not found with ID: " + id);
         }
         recipeRepository.deleteById(id);
+    }
+
+    // RecipeController.java (dodatna metoda)
+    @DeleteMapping("/history/{userId}")
+    public void deleteUserRecipeHistory(@PathVariable Long userId) {
+        List<RecipeHistory> historyList = recipeHistoryRepository.findByUserId(userId);
+        recipeHistoryRepository.deleteAll(historyList);
     }
 }

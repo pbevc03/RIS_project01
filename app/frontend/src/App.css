@@ -38,11 +38,6 @@ header nav ul li a:hover {
   text-decoration: underline;
 }
 
-/* Main Content Styles */
-main {
-  padding: 20px;
-}
-
 .recipe-list {
   display: flex;
   flex-wrap: wrap;
@@ -72,13 +67,6 @@ main {
   text-decoration: underline;
 }
 
-
-
-/* Additional styling for custom adjustments */
-body {
-  background-color: #f8f9fa;
-}
-
 /* Adjust the width of the search input */
 .custom-search {
   width: 200px; /* Set to a smaller width */
@@ -92,3 +80,26 @@ body {
   border-radius: 0 0.25rem 0.25rem 0;
 }
 
+
+/* App.css */
+
+/* Zagotovi, da celotno telo in HTML elementa zavzemata 100% višine */
+html, body, #root {
+  background-color: #f8f9fa;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Zagotovi, da glavni App div uporablja Flexbox in zasede celotno višino */
+.App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Minimalna višina 100% vidnega območja */
+}
+
+/* Glavna vsebina naj raste, da potisne footer na dno */
+main {
+  flex: 1;
+  padding: 20px;
+}
