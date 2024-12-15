@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import History from './pages/History'; // Uvoz nove komponente
+
 
 function App() {
     const [recipes, setRecipes] = useState([]);
@@ -338,19 +341,28 @@ function App() {
     };
 
     return (
-        <div className="App">
+        <Router>
+        <div className="App d-flex flex-column min-vh-100">
             {/* Header */}
             <header className="success text-white p-3 mb-4">
                 <div className="container">
                     <div className="d-flex justify-content-between align-items-center">
                         <h1 className="h3 mb-0">Spletna stran z recepti</h1>
                         <nav>
-                            <ul className="nav">
-                                <li className="nav-item"><a className="nav-link text-white" href="/">Domov</a></li>
-                                <li className="nav-item"><a className="nav-link text-white" href="/Onas">O nas</a></li>
-                                <li className="nav-item"><a className="nav-link text-white" href="/kontakt">Kontakt</a>
-                                </li>
-                            </ul>
+                        <ul className="nav">
+                                    <li className="nav-item">
+                                        <Link className="nav-link text-white" to="/">Domov</Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link className="nav-link text-white" to="/Onas">O nas</Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link className="nav-link text-white" to="/kontakt">Kontakt</Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link className="nav-link text-white" to="/History">Ogledani Recepti</Link>
+                                    </li>
+                                </ul>
                         </nav>
                         <div className="auth-buttons">
                             {loggedInUser ? (
@@ -463,162 +475,201 @@ function App() {
                 </form>
             </div>)}
 
-            {/* Main content */}
-            <main className="container">
-                <h2>Recepti</h2>
-                <div className="row">
-                    <div className="col-md-6">
-                        <ul className="list-group">
-                            {recipes
-                                .filter((r) => r.title.toLowerCase().includes(searchQuery.toLowerCase()))
-                                .map((recipe) => (
-                                    <li
-                                        key={recipe.id}
-                                        className="list-group-item d-flex justify-content-between align-items-center"
-                                        onClick={() => handleRecipeClick(recipe)}
-                                    >
-                                        {recipe.title} - {recipe.category?.name || 'Uncategorized'}
-                                        <div>
-                                            <button className="btn btn-primary btn-sm me-2"
-                                                    onClick={() => handleEditClick(recipe)}>Edit
-                                            </button>
-                                            <button className="btn btn-danger btn-sm"
-                                                    onClick={() => handleDeleteRecipe(recipe.id)}>Delete
-                                            </button>
+                {/* Glavna vsebina s potmi */}
+                <main className="container flex-grow-1">
+                    <Routes>
+                        <Route 
+                            path="/" 
+                            element={
+                                <>
+                                    <h2>Recepti</h2>
+                                    <div className="row">
+                                        <div className="col-md-6">
+                                            <ul className="list-group">
+                                                {recipes
+                                                    .filter((r) => r.title.toLowerCase().includes(searchQuery.toLowerCase()))
+                                                    .map((recipe) => (
+                                                        <li
+                                                            key={recipe.id}
+                                                            className="list-group-item d-flex justify-content-between align-items-center"
+                                                            onClick={() => handleRecipeClick(recipe)}
+                                                        >
+                                                            {recipe.title} - {recipe.category?.name || 'Neurejen'}
+                                                            <div>
+                                                                <button 
+                                                                    className="btn btn-primary btn-sm me-2"
+                                                                    onClick={() => handleEditClick(recipe)}
+                                                                >
+                                                                    Uredi
+                                                                </button>
+                                                                <button 
+                                                                    className="btn btn-danger btn-sm"
+                                                                    onClick={() => handleDeleteRecipe(recipe.id)}
+                                                                >
+                                                                    Izbriši
+                                                                </button>
+                                                            </div>
+                                                        </li>
+                                                    ))}
+                                            </ul>
                                         </div>
-                                    </li>
-                                ))}
-                        </ul>
-                    </div>
-                                                          
-                    <div className="col-md-6">
-                        {selectedRecipe && (
-                            <div>
-                                <h3>{selectedRecipe.title}</h3>
-                                <p>{selectedRecipe.description}</p>
-                                <p><strong>Category:</strong> {selectedRecipe.category?.name || 'Uncategorized'}</p>
+                                        
+                                        <div className="col-md-6">
+                                            {selectedRecipe && (
+                                                <div>
+                                                    <h3>{selectedRecipe.title}</h3>
+                                                    <p>{selectedRecipe.description}</p>
+                                                    <p><strong>Kategorija:</strong> {selectedRecipe.category?.name || 'Neurejena'}</p>
 
-                                {/* Input for portions */}
-                                <div className="mb-3">
-                                    <label htmlFor="portions" className="form-label">Število porcij:</label>
-                                    <input
-                                        type="number"
-                                        id="portions"
-                                        className="form-control"
-                                        value={portions}
-                                        min="1"
-                                        onChange={(e) => handlePortionsChange(e.target.value)}
-                                    />
+                                                    {/* Vnos za število porcij */}
+                                                    <div className="mb-3">
+                                                        <label htmlFor="portions" className="form-label">Število porcij:</label>
+                                                        <input
+                                                            type="number"
+                                                            id="portions"
+                                                            className="form-control"
+                                                            value={portions}
+                                                            min="1"
+                                                            onChange={(e) => handlePortionsChange(e.target.value)}
+                                                        />
+                                                    </div>
+
+                                                    {/* Tabela sestavin */}
+                                                    <h4>Sestavine</h4>
+                                                    <table className="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Ime sestavine</th>
+                                                                <th>Količina</th>
+                                                                <th>Enota</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {(adjustedIngredients.length > 0 ? adjustedIngredients : []).map((ingredient, index) => (
+                                                                <tr key={index}>
+                                                                    <td>{ingredient.name}</td>
+                                                                    <td>{ingredient.quantity.toFixed(2)}</td>
+                                                                    <td>{ingredient.unit}</td>
+                                                                </tr>
+                                                            ))}
+                                                        </tbody>
+                                                    </table>
+
+                                                    <p><strong>Navodila:</strong> {selectedRecipe.instructions}</p>
+
+                                                    <h4>Komentarji</h4>
+                                                    <ul className="list-group">
+                                                        {comments.map((comment) => (
+                                                            <li key={comment.id}
+                                                                className="list-group-item d-flex justify-content-between align-items-center">
+                                                                {comment.content}
+                                                                <button
+                                                                    className="btn btn-danger btn-sm"
+                                                                    onClick={() => handleDeleteComment(comment.id)}
+                                                                >
+                                                                    Izbriši
+                                                                </button>
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+                                                    <div className="input-group mt-3">
+                                                        <input
+                                                            type="text"
+                                                            className="form-control"
+                                                            placeholder="Dodaj komentar..."
+                                                            value={newComment}
+                                                            onChange={handleCommentChange}
+                                                        />
+                                                        <button className="btn btn-primary" onClick={handleAddComment}>Komentiraj</button>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    <h2 className="mt-4">{editingRecipeId ? 'Uredi recept' : 'Dodaj nov recept'}</h2>
+                                    <div className="form-group">
+                                        <input
+                                            type="text"
+                                            name="title"
+                                            className="form-control mb-2"
+                                            placeholder="Naslov"
+                                            value={newRecipe.title}
+                                            onChange={handleNewRecipeChange}
+                                        />
+                                        <textarea
+                                            name="description"
+                                            className="form-control mb-2"
+                                            placeholder="Opis"
+                                            value={newRecipe.description}
+                                            onChange={handleNewRecipeChange}
+                                        ></textarea>
+                                        <textarea
+                                            name="ingredients"
+                                            className="form-control mb-2"
+                                            placeholder="Sestavine"
+                                            value={newRecipe.ingredients}
+                                            onChange={handleNewRecipeChange}
+                                        ></textarea>
+                                        <textarea
+                                            name="instructions"
+                                            className="form-control mb-2"
+                                            placeholder="Navodila"
+                                            value={newRecipe.instructions}
+                                            onChange={handleNewRecipeChange}
+                                        ></textarea>
+                                        <select
+                                            name="categoryId"
+                                            className="form-control mb-2"
+                                            value={newRecipe.categoryId}
+                                            onChange={handleNewRecipeChange}
+                                        >
+                                            <option value="">Izberite kategorijo</option>
+                                            {categories.map((category) => (
+                                                <option key={category.id} value={category.id}>
+                                                    {category.name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        <button className="btn btn-success" onClick={handleCreateOrEditRecipe}>
+                                            {editingRecipeId ? 'Shrani spremembe' : 'Dodaj recept'}
+                                        </button>
+                                    </div>
+                                </>
+                            } 
+                        />
+                        <Route 
+                            path="/History" 
+                            element={<History />} 
+                        />
+                        {/* Dodajte dodatne poti, npr. O nas, Kontakt */}
+                        <Route 
+                            path="/Onas" 
+                            element={
+                                <div className="container">
+                                    <h2>O nas</h2>
+                                    <p>Informacije o nas.</p>
                                 </div>
-
-                                {/* Ingredients Table */}
-                                <h4>Sestavine</h4>
-                                <table className="table">
-                                    <thead>
-                                    <tr>
-                                        <th>Ime sestavine</th>
-                                        <th>Količina</th>
-                                        <th>Enota</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {(adjustedIngredients.length > 0 ? adjustedIngredients : []).map((ingredient, index) => (
-                                        <tr key={index}>
-                                            <td>{ingredient.name}</td>
-                                            <td>{ingredient.quantity.toFixed(2)}</td>
-                                            <td>{ingredient.unit}</td>
-                                        </tr>
-                                    ))}
-                                    </tbody>
-                                </table>
-
-                                <p><strong>Instructions:</strong> {selectedRecipe.instructions}</p>
-
-                                <h4>Comments</h4>
-                                <ul className="list-group">
-                                    {comments.map((comment) => (
-                                        <li key={comment.id}
-                                            className="list-group-item d-flex justify-content-between align-items-center">
-                                            {comment.content}
-                                            <button
-                                                className="btn btn-danger btn-sm"
-                                                onClick={() => handleDeleteComment(comment.id)}
-                                            >
-                                                Delete
-                                            </button>
-                                        </li>
-                                    ))}
-                                </ul>
-                                <div className="input-group mt-3">
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        placeholder="Add a comment..."
-                                        value={newComment}
-                                        onChange={handleCommentChange}
-                                    />
-                                    <button className="btn btn-primary" onClick={handleAddComment}>Comment</button>
+                            }
+                        />
+                        <Route 
+                            path="/kontakt" 
+                            element={
+                                <div className="container">
+                                    <h2>Kontakt</h2>
+                                    <p>Kontaktni podatki.</p>
                                 </div>
-                            </div>
-                        )}
-                    </div>
-                </div>
-
-                <h2 className="mt-4">{editingRecipeId ? 'Edit recipe' : 'Add new recipe'}</h2>
-                <div className="form-group">
-                    <input
-                        type="text"
-                        name="title"
-                        className="form-control mb-2"
-                        placeholder="Title"
-                        value={newRecipe.title}
-                        onChange={handleNewRecipeChange}
-                    />
-                    <textarea
-                        name="description"
-                        className="form-control mb-2"
-                        placeholder="Description"
-                        value={newRecipe.description}
-                        onChange={handleNewRecipeChange}
-                    ></textarea>
-                    <textarea
-                        name="ingredients"
-                        className="form-control mb-2"
-                        placeholder="Ingredients"
-                        value={newRecipe.ingredients}
-                        onChange={handleNewRecipeChange}
-                    ></textarea>
-                    <textarea
-                        name="instructions"
-                        className="form-control mb-2"
-                        placeholder="Instructions"
-                        value={newRecipe.instructions}
-                        onChange={handleNewRecipeChange}
-                    ></textarea>
-                    <select
-                        name="categoryId"
-                        className="form-control mb-2"
-                        value={newRecipe.categoryId}
-                        onChange={handleNewRecipeChange}
-                    >
-                        <option value="">Select a category</option>
-                        {categories.map((category) => (
-                            <option key={category.id} value={category.id}>
-                                {category.name}
-                            </option>
-                        ))}
-                    </select>
-                    <button className="btn btn-success" onClick={handleCreateOrEditRecipe}>
-                        {editingRecipeId ? 'Save Changes' : 'Add Recipe'}
-                    </button>
-                </div>
-            </main>
+                            }
+                        />
+                    </Routes>
+                </main>
 
             {/* Footer */}
             <footer className="bg-dark text-white text-center py-2 mt-4">
                 <p>&copy; 2024 Spletna stran z recepti</p>
             </footer>
         </div>
+        </Router>
     );
 }
 
