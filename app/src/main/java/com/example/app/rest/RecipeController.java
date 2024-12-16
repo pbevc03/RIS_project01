@@ -57,6 +57,7 @@ public class RecipeController {
     }
 
     // GET THE HISTORY OF THE USER
+    // RecipeController.java
     @GetMapping("/history/{userId}")
     public List<RecipeDTO> getUserRecipeHistory(@PathVariable Long userId) {
         List<RecipeHistory> historyList = recipeHistoryRepository.findByUserId(userId);
@@ -70,10 +71,19 @@ public class RecipeController {
             dto.setTitle(recipe.getTitle());
             dto.setDescription(recipe.getDescription());
             dto.setInstructions(recipe.getInstructions());
+            dto.setCategoryId(recipe.getCategory() != null ? recipe.getCategory().getId() : null);
 
-            if (recipe.getCategory() != null) {
-                dto.setCategoryId(recipe.getCategory().getId());
-            }
+            // Mapiranje RecipeIngredients
+            dto.setRecipeIngredients(recipe.getRecipeIngredients().stream()
+                    .map(recipeIngredient -> {
+                        RecipeIngredientDTO ingredientDTO = new RecipeIngredientDTO();
+                        ingredientDTO.setIngredientId(recipeIngredient.getIngredient().getId());
+                        ingredientDTO.setIngredientName(recipeIngredient.getIngredient().getName());
+                        ingredientDTO.setQuantity(recipeIngredient.getQuantity());
+                        ingredientDTO.setUnit(recipeIngredient.getUnit());
+                        return ingredientDTO;
+                    }).collect(Collectors.toList()));
+
             recipeDTOList.add(dto);
         }
         return recipeDTOList;

@@ -1,8 +1,13 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Bar } from 'react-chartjs-2';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 function History() {
     const [historyRecipes, setHistoryRecipes] = useState([]);
+    const [ingredientStats, setIngredientStats] = useState([]);
     const userId = localStorage.getItem('userId');
 
     useEffect(() => {
@@ -16,12 +21,37 @@ function History() {
                 })
                 .then(data => {
                     setHistoryRecipes(data);
+                    calculateIngredientStats(data);
                 })
                 .catch(error => {
                     console.error('Napaka pri pridobivanju zgodovine receptov:', error);
                 });
         }
     }, [userId]);
+
+    const calculateIngredientStats = (recipes) => {
+        const statsMap = {};
+
+        recipes.forEach(recipe => {
+            if (recipe.recipeIngredients && recipe.recipeIngredients.length > 0) {
+                recipe.recipeIngredients.forEach(ingredient => {
+                    const key = `${ingredient.ingredientName}_${ingredient.unit}`;
+                    if (statsMap[key]) {
+                        statsMap[key].totalQuantity += ingredient.quantity;
+                    } else {
+                        statsMap[key] = {
+                            name: ingredient.ingredientName,
+                            unit: ingredient.unit,
+                            totalQuantity: ingredient.quantity
+                        };
+                    }
+                });
+            }
+        });
+
+        const statsArray = Object.values(statsMap).sort((a, b) => a.name.localeCompare(b.name));
+        setIngredientStats(statsArray);
+    };
 
     const handleClearHistory = async () => {
         if (window.confirm('Ali ste prepričani, da želite izbrisati celotno zgodovino ogledov?')) {
@@ -30,11 +60,38 @@ function History() {
                     method: 'DELETE',
                 });
                 setHistoryRecipes([]);
+                setIngredientStats([]);
                 console.log('Zgodovina je bila izbrisana.');
             } catch (error) {
                 console.error('Napaka pri brisanju zgodovine:', error);
             }
         }
+    };
+
+    const data = {
+        labels: ingredientStats.map(stat => stat.name),
+        datasets: [
+            {
+                label: 'Skupna Količina',
+                data: ingredientStats.map(stat => stat.totalQuantity),
+                backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1,
+            },
+        ],
+    };
+
+    const options = {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top',
+            },
+            title: {
+                display: true,
+                text: 'Statistika Sestavin',
+            },
+        },
     };
 
     return (
@@ -48,20 +105,51 @@ function History() {
             {historyRecipes.length === 0 ? (
                 <p>Ni zapisov o ogledanih receptih.</p>
             ) : (
-                <div className="row">
-                    <div className="col-md-6">
-                        <ul className="list-group">
-                            {historyRecipes.map((recipe) => (
-                                <li
-                                    key={recipe.id}
-                                    className="list-group-item d-flex justify-content-between align-items-center"
-                                >
-                                    {recipe.title} - {recipe.category?.name || 'Neurejen'}
-                                </li>
-                            ))}
-                        </ul>
+                <>
+                    <h3>Ogledani Recepti</h3>
+                    <div className="row mb-5">
+                        <div className="col-md-6">
+                            <ul className="list-group">
+                                {historyRecipes.map((recipe) => (
+                                    <li
+                                        key={recipe.id}
+                                        className="list-group-item d-flex justify-content-between align-items-center"
+                                    >
+                                        {recipe.title} - {recipe.category?.name || 'Neurejen'}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
                     </div>
-                </div>
+
+                    <h3>Statistika Sestavin</h3>
+                    {ingredientStats.length === 0 ? (
+                        <p>Ni podatkov za statistiko sestavin.</p>
+                    ) : (
+                        <>
+                            <Bar data={data} options={options} />
+                            <br></br>
+                            <table className="table table-bordered mb-5">
+                                <thead>
+                                    <tr>
+                                        <th>Ime Sestavine</th>
+                                        <th>Količina</th>
+                                        <th>Enota</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {ingredientStats.map((ingredient, index) => (
+                                        <tr key={index}>
+                                            <td>{ingredient.name}</td>
+                                            <td>{ingredient.totalQuantity.toFixed(2)}</td>
+                                            <td>{ingredient.unit}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </>
+                    )}
+                </>
             )}
         </div>
     );
