@@ -65,6 +65,7 @@ function App() {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             const data = await response.json();
+            console.log('data v fetch categories', data)
             setCategories(data);
         } catch (error) {
             console.error('Error fetching categories:', error);
@@ -105,7 +106,6 @@ function App() {
         fetchComments(recipe.id);
         //fetchIngredients(recipe.id);
         const ingredientsData = await fetchIngredients(recipe.id)
-
 
         if (ingredientsData) {
             const adjusted = ingredientsData.map((ingredient) => ({
@@ -492,7 +492,7 @@ function App() {
                 <main className="container flex-grow-1">
                     <Routes>
                         <Route 
-                            path="/" 
+                            path="/"
                             element={
                                 <>
                                     <h2>Recepti</h2>
@@ -653,7 +653,7 @@ function App() {
                         />
                         <Route 
                             path="/History" 
-                            element={<History />} 
+                            element={<History allRecipes={recipes}/>}
                         />
                         {/* Dodajte dodatne poti, npr. O nas, Kontakt */}
                         <Route 

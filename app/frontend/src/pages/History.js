@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
-
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-function History() {
+function History({allRecipes}) {
     const [historyRecipes, setHistoryRecipes] = useState([]);
     const [ingredientStats, setIngredientStats] = useState([]);
     const userId = localStorage.getItem('userId');
+    const [recommendedRecipes, setRecommendedRecipes] = useState([]);
 
     useEffect(() => {
         if (userId) {
@@ -52,6 +52,33 @@ function History() {
         const statsArray = Object.values(statsMap).sort((a, b) => a.name.localeCompare(b.name));
         setIngredientStats(statsArray);
     };
+
+    const recommendRecipesByIngredients = (viewedRecipes, allRecipes) => {
+        const viewedIngredients = new Set();
+
+        // Zberi vse sestavine iz ogledanih receptov
+        viewedRecipes.forEach(recipe => {
+            recipe.recipeIngredients.forEach(ingredient => {
+                viewedIngredients.add(ingredient.ingredientName.toLowerCase());
+            });
+        });
+
+        // Poišči recepte z ujemajočimi sestavinami
+        return allRecipes.filter(recipe =>
+            recipe.recipeIngredients.some(ingredient =>
+                viewedIngredients.has(ingredient.ingredientName.toLowerCase())
+            )
+        );
+    };
+
+    useEffect(() => {
+        if (historyRecipes.length > 0 && allRecipes.length > 0) {
+            const recommendations = recommendRecipesByIngredients(historyRecipes, allRecipes);
+            setRecommendedRecipes(recommendations);
+        }
+    }, [historyRecipes, allRecipes]); // Preračunaj priporočila, ko se spremenijo podatki
+
+
 
     const handleClearHistory = async () => {
         if (window.confirm('Ali ste prepričani, da želite izbrisati celotno zgodovino ogledov?')) {
@@ -149,6 +176,23 @@ function History() {
                             </table>
                         </>
                     )}
+
+                    {recommendedRecipes.length > 0 && (
+                        <>
+                            <h3>Priporočeni recepti</h3>
+                            <ul className="list-group">
+                                {recommendedRecipes.map((recipe) => (
+                                    <li
+                                        key={recipe.id}
+                                        className="list-group-item d-flex justify-content-between align-items-center"
+                                    >
+                                        {recipe.title} - {recipe.category?.name || 'Neurejen'}
+                                    </li>
+                                ))}
+                            </ul>
+                        </>
+                    )}
+
                 </>
             )}
         </div>
