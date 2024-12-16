@@ -1,9 +1,27 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function History() {
     const [historyRecipes, setHistoryRecipes] = useState([]);
     const userId = localStorage.getItem('userId');
+
+    useEffect(() => {
+        if (userId) {
+            fetch(`http://localhost:8080/recipes/history/${userId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    setHistoryRecipes(data);
+                })
+                .catch(error => {
+                    console.error('Napaka pri pridobivanju zgodovine receptov:', error);
+                });
+        }
+    }, [userId]);
 
     const handleClearHistory = async () => {
         if (window.confirm('Ali ste prepričani, da želite izbrisati celotno zgodovino ogledov?')) {

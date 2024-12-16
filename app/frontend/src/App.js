@@ -115,6 +115,19 @@ function App() {
             }));
             setAdjustedIngredients(adjusted);
         }
+
+        // Shranjevanje ogleda recepta v bazo podatkov
+        const userId = localStorage.getItem('userId');
+        if (userId) {
+            try {
+                await fetch(`http://localhost:8080/recipes/view/${recipe.id}?userId=${userId}`, {
+                    method: 'POST',
+                });
+                console.log('Ogled recepta je bil shranjen.');
+            } catch (error) {
+                console.error('Napaka pri shranjevanju ogleda recepta:', error);
+            }
+        }
     };
 
     const handleNewRecipeChange = (e) => {
