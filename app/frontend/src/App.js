@@ -507,7 +507,7 @@ function App() {
                                                             className="list-group-item d-flex justify-content-between align-items-center"
                                                             onClick={() => handleRecipeClick(recipe)}
                                                         >
-                                                            {recipe.title} - {recipe.category?.name || 'Neurejen'}
+                                                            {recipe.title}  {recipe.category?.name || ''}
                                                             <div>
                                                                 <button 
                                                                     className="btn btn-primary btn-sm me-2"
@@ -532,7 +532,7 @@ function App() {
                                                 <div>
                                                     <h3>{selectedRecipe.title}</h3>
                                                     <p>{selectedRecipe.description}</p>
-                                                    <p><strong>Kategorija:</strong> {selectedRecipe.category?.name || 'Neurejena'}</p>
+                                                    <p><strong>Kategorija:</strong> {selectedRecipe.category?.name || ''}</p>
 
                                                     {/* Vnos za število porcij */}
                                                     <div className="mb-3">
