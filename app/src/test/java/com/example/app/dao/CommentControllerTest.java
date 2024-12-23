@@ -55,7 +55,7 @@ public class CommentControllerTest {
         testRecipe = recipeRepository.save(Recipe.builder()
                 .title("Test Recipe")
                 .description("Test Description")
-                .ingredients("Test Ingredients")
+                //.ingredients("Test Ingredients")
                 .instructions("Test Instructions")
                 .user(testUser)
                 .build());

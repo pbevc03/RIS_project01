@@ -13,6 +13,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
+import java.util.List;
+
 @SpringBootTest
 public class RecipeControllerTest {
 
@@ -57,7 +59,7 @@ public class RecipeControllerTest {
         recipeRepository.save(Recipe.builder()
                 .title("Recept01")
                 .description("Description01")
-                .ingredients("Ingredients01")
+                //.ingredients("Ingredients01")
                 .instructions("Instructions01")
                 .user(user)
                 .build());
@@ -65,12 +67,12 @@ public class RecipeControllerTest {
         recipeRepository.save(Recipe.builder()
                 .title("Recept02")
                 .description("Description02")
-                .ingredients("Ingredients02")
+                //.ingredients("Ingredients02")
                 .instructions("Instructions02")
                 .user(user)
                 .build());
 
-        Iterable<Recipe> recipes = recipeController.getAllRecipes();
+        List<RecipeDTO> recipes = recipeController.getAllRecipes();
         Assertions.assertTrue(recipes.iterator().hasNext());
         Assertions.assertEquals(2, recipeRepository.count());
     }
@@ -87,7 +89,7 @@ public class RecipeControllerTest {
         RecipeDTO recipeDTO = new RecipeDTO();
         recipeDTO.setTitle("Recipe01");
         recipeDTO.setDescription("Description01");
-        recipeDTO.setIngredients("Ingredients01");
+        //recipeDTO.setIngredients("Ingredients01");
         recipeDTO.setInstructions("Instructions01");
 
         Recipe createdRecipe = recipeController.createRecipe(recipeDTO, user.getId());
@@ -110,7 +112,7 @@ public class RecipeControllerTest {
 
         RecipeDTO recipeDTO = new RecipeDTO();
         recipeDTO.setDescription("Description01");
-        recipeDTO.setIngredients("Ingredients01");
+        //recipeDTO.setIngredients("Ingredients01");
         recipeDTO.setInstructions("Instructions01");
 
         try {
@@ -135,7 +137,7 @@ public class RecipeControllerTest {
         RecipeDTO recipeDTO = new RecipeDTO();
         recipeDTO.setTitle("Recipe01");
         recipeDTO.setDescription("Description01");
-        recipeDTO.setIngredients("Ingredients01");
+        //recipeDTO.setIngredients("Ingredients01");
         recipeDTO.setInstructions("Instructions01");
 
         Long invalidUserId = -1L;
