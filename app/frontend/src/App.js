@@ -91,7 +91,6 @@ function App() {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             const data = await response.json();
-            setIngredients(data);
             return data;
 
         } catch (error) {
