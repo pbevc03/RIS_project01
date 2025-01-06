@@ -21,10 +21,10 @@ jobs:
 
 #vmes pride frontend
 
-  
+
   unit-test:
     runs-on: ubuntu-latest
-    #needs: frontend-build
+    needs: back-end-build
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
