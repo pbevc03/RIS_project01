@@ -33,7 +33,6 @@ function App() {
     })
     const [loggedInUser, setLoggedInUser] = useState(null);
     const [portions, setPortions] = useState(1);
-    const [ingredients, setIngredients] = useState([]);
     const [adjustedIngredients, setAdjustedIngredients] = useState([]);
 
     useEffect(() => {
