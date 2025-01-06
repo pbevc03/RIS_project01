@@ -25,21 +25,17 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-        
-      - name: Install Node.js v22.10.0
-        run: |
-          curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
-          sudo apt-get install -y nodejs
-        shell: bash
 
-      - name: Verify Node.js version
-        run: node --version
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.18.1'
 
       - name: Install and build frontend
         run: |
-          npm install --verbose
-          npm run build --verbose
-        working-directory: app
+          npm install
+          npm run build
+        working-directory: app/frontend
 
 
   unit-test:
